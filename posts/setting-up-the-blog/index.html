@@ -314,6 +314,15 @@ git push origin master
 cd ..
 </code></pre>
 
+<h2 id="setting-up-graphcomment">Setting up GraphComment</h2>
+
+<ol>
+<li>Sign up at <a href="https://graphcomment.com">GraphComment</a></li>
+<li>Create your chat site, add <code>&lt;USERNAME&gt;.github.io</code></li>
+<li>Copy the generated <code>SiteID</code> in the <code>setup</code> tab of your site in GraphComment, <code>window.graphcomment_id = '&lt;SiteID&gt;';</code></li>
+<li>Paste it to <code>params.GraphCommentId</code> of <code>config.toml</code></li>
+</ol>
+
 <h2 id="finished">Finished</h2>
 
 <p>All done. Enjoy it.</p>
@@ -330,7 +339,7 @@ cd ..
     
 <div id="graphcomment"></div>
 <script type="text/javascript">
-  window.graphcomment_id = 'RayG';
+  window.graphcomment_id = 'ray-g-github-io';
    
   (function() {
     var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
