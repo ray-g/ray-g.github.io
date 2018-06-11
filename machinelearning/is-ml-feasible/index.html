@@ -115,7 +115,7 @@
       
       
       <br/>
-      <i class="fas fa-clock"></i> 1 min read 
+      <i class="fas fa-clock"></i> 2 min read 
       </span>  
   </div>    
   
@@ -167,6 +167,8 @@
 
 <h2 id="数学的证明">数学的证明</h2>
 
+<h3 id="坏事情发生的概率很低">坏事情发生的概率很低</h3>
+
 <p>在概率论中，有一个已经被证明了的定理，Hoeffding’s Inequality (霍夫丁不等式)。</p>
 
 <p>\[ \mathbb{P}[|\nu - \mu| &gt; \epsilon] \leq 2exp(-2\epsilon^{2}N) \]</p>
@@ -185,6 +187,8 @@
 
 <p>\[ \mathbb{P}[|E_{in} - E_{out}| &gt; \epsilon] \leq 2exp(-2\epsilon^{2}N) \]</p>
 
+<h3 id="可以开始学习了吗">可以开始学习了吗？</h3>
+
 <p>这样只要找到最小的那个<span  class="math">\(E_{in}\)</span>我们就能进行机器学习了吗？</p>
 
 <p>等等，霍夫丁给我们的保证只是随机抽一个个体，对于一个<code>h</code>来说，那么这个个体是坏事情的概率够小。
@@ -198,10 +202,49 @@
 \[ = \mathbb{P_{D}}[ D_{badh_{1}} or D_{badh_{2}} or ... or D_{badh_{M}} ] \]
 \[ \leq \mathbb{P_{D}}[ D_{badh_{1}} ] + \mathbb{P_{D}}[ D_{badh_{2}} ] + ... + \mathbb{P_{D}}[ D_{badh_{M}} ] \] (union bound)
 \[ \leq 2exp(-2\epsilon^2N) + 2exp(-2\epsilon^2N) + ... + 2exp(-2\epsilon^2N) \]
-\[ = 2Mexp(-2\epsilon^2N)\]</p>
+\[ = 2Mexp(-2\epsilon^2N) \]</p>
 
 <p>也就是说，如果<code>H</code>为有限集，那么只要<code>N</code>够大，演算法<code>A</code>就一定能找到一个足够好的假设<code>g</code>。
 只要找到最小样本内错误的一个假设，也就可以认为是最好的那个假设<code>g</code>，从而实现了机器学习。</p>
+
+<h3 id="好像还缺些什么">好像还缺些什么</h3>
+
+<p>只能有<code>M</code>个有限假设？那么<code>M</code>最大能是多少？</p>
+
+<p><code>M</code>在比较小的时候，坏事情发生的概率确实很小，但是只是能保证说 <span  class="math">\( E_{in} \)</span> 与 <span  class="math">\( E_{out} \)</span> 差别不大，
+但是无法保证这个最小的<span  class="math">\( E_{in} \)</span>就是一个好到能够使用的<code>h</code>。那么要想找到一个合适的<code>h</code>，就需要增大假设集，
+但是随着<code>M</code>的增大，那么坏事情发生概率就会直线的增加。目前我们的不等式如下：</p>
+
+<p>\[ \mathbb{P}[|E_{in} - E_{out}| &gt; \epsilon] \leq 2Mexp(-2\epsilon^2N) \]</p>
+
+<p>我们希望能够一定找到一个比较好的<code>h</code>，那么在<code>M</code>个假设中，坏事情发生的总的概率是多少呢？</p>
+
+<p>我们定义 <code>Bad event</code> <span  class="math">\( B_{m} : |E_{in}(h_{m}) - E_{out}(h_{m})| \)</span></p>
+
+<p>那么，当事情到了最坏的地步，就是所有的坏事情坏的都不一样，也就是说，所有的 <span  class="math">\( B_{m} \)</span> 都不重复，那么：</p>
+
+<p>\[ \mathbb{P}[B_{1} or B_{2} or ... or B_{m}] \leq \mathbb{P}[B_{1}] + \mathbb{P}[B_{2}] + ... + \mathbb{P}[B_{m}] \]</p>
+
+<p>那这样当<code>M</code>趋于无限大的时候，那么坏事情的上限也就无限大了。</p>
+
+<p>这样岂不是当<code>M</code>比较大的时候就无法进行学习了？</p>
+
+<p>那么我们做错了什么吗？</p>
+
+<p>其实，在定义假设集的时候，其实定义的是有限的几组很相似的函数，也就是说，绝大部分的假设<code>h</code>，其实应该是重叠的，
+所以我们在使用union bound估计坏事情的时候，其实是过估计了。那么<code>N</code>个点如果进行分类的话最多只有<code>N</code>种类别，
+针对每一种类别，那一组的<code>h</code>应该都是几乎一样的，这样我们可以假设有一个函数 <span  class="math">\( m_{h}(N) \)</span>，
+用来表示随着<code>N</code>的增大，<code>H</code>中有效<code>h</code>的个数，那么，之前的不等式可以替换为：</p>
+
+<p>\[ \mathbb{P}[|E_{in} - E_{out}| &gt; \epsilon] \leq 2 \cdot m_{h}(N) \cdot exp(-2\epsilon^2N) \]</p>
+
+<p>根据 Vapnik-Chervonenkis (VC) bound, 当<code>N</code>趋于无限大时，有以下不等式：</p>
+
+<p>\[ \mathbb{P}[|E_{in} - E_{out}| &gt; \epsilon] \leq 4 \cdot m_{h}(2N) \cdot exp(-\frac{1}{8} \cdot \epsilon^2N) \]</p>
+
+<p>所以，随着<code>M</code>的增大，其实是不需要担心的，我们之前定义的通过选最小的 <span  class="math">\( E_{in} \)</span> 演算法<code>A</code>，其实还是能找到最好的<code>g</code>的。</p>
+
+<p>所以，机器学习是可行的。</p>
 
 <h2 id="为什么需要机器学习">为什么需要机器学习？</h2>
 
@@ -220,7 +263,7 @@
 
 <h2 id="什么时候可以应用机器学习">什么时候可以应用机器学习？</h2>
 
-<p>更具体一些，机器学习是机器通过对<code>数据</code>进行一系列的<code>计算</code>过程，得到<code>性能提升</code>。那么符合以下个条件的话，就适合应用机器学习：</p>
+<p>机器学习是机器通过对<code>数据</code>进行一系列的<code>计算</code>过程，得到<code>性能提升</code>。那么符合以下个条件的话，就适合应用机器学习：</p>
 
 <ol>
 <li>存在一种<code>模式</code>可以被总结并学得，否则机器无从学起</li>
