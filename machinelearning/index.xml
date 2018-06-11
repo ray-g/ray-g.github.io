@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Mls on RayG</title>
-    <link>https://ray-g.github.io/ml/</link>
-    <description>Recent content in Mls on RayG</description>
+    <title>Machinelearnings on RayG</title>
+    <link>https://ray-g.github.io/machinelearning/</link>
+    <description>Recent content in Machinelearnings on RayG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 11 Jun 2018 00:26:35 +0800</lastBuildDate>
     
-	<atom:link href="https://ray-g.github.io/ml/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://ray-g.github.io/machinelearning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>机器真的可以学习吗？</title>
-      <link>https://ray-g.github.io/ml/is-ml-feasible/</link>
+      <link>https://ray-g.github.io/machinelearning/is-ml-feasible/</link>
       <pubDate>Mon, 11 Jun 2018 00:26:35 +0800</pubDate>
       
-      <guid>https://ray-g.github.io/ml/is-ml-feasible/</guid>
+      <guid>https://ray-g.github.io/machinelearning/is-ml-feasible/</guid>
       <description>在讨论机器是否可以学习之前，我们先来看看下面这个问题
 什么是学习？ 在课堂上听老师讲课，是进行学习; 自己通过摸索总结得出经验，也是学习; 小朋友通过模仿大人说话，从而学会说话，也是学习。
 人自从出生以后，就一直在学习，一直在通过触觉，视觉以及听觉来观察感受所在的世界，并学习到各种技能，从而更加适应在这个世界中生存。
