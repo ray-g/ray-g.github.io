@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>RayG</title>
-    <link>https://ray-g.github.io/</link>
-    <description>Recent content on RayG</description>
+    <title>Others on RayG</title>
+    <link>https://ray-g.github.io/others/</link>
+    <description>Recent content in Others on RayG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 11 Jun 2018 00:05:12 +0800</lastBuildDate>
     
-	<atom:link href="https://ray-g.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://ray-g.github.io/others/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -32,17 +32,6 @@ Setting up Hugo site Install Hugo First we should have a Hugo installed, Install
 After Hugo installed, try verify it.
 $ hugo version Hugo Static Site Generator v0.41 linux/amd64 BuildDate: 2018-05-25T16:57:20Z  Create a New Site Hugo can generate layout of a new site very easy:
 $ hugo new site hugo-blog Congratulations!</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>https://ray-g.github.io/about/</link>
-      <pubDate>Sun, 10 Jun 2018 12:51:53 +0800</pubDate>
-      
-      <guid>https://ray-g.github.io/about/</guid>
-      <description> Ray Guo, a software engineer as well as a geek.
-Previousily focus on C/C++ for many years, then turned into a full-stack engineer. Currently has worked with following technologies:
- C/C++ Golang Python Ruby Shell JavaScript Docker Angular VueJS D3.js TensorFlow Pandas etc.  Archivements Patents  Granted Dynamic call tracking method based on CPU interrupt instructions to improve disassembly quality of indirect calls  </description>
     </item>
     
   </channel>
