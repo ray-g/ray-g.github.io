@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>RayG</title>
-    <link>https://ray-g.github.io/</link>
-    <description>Recent content on RayG</description>
+    <title>Mls on RayG</title>
+    <link>https://ray-g.github.io/ml/</link>
+    <description>Recent content in Mls on RayG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 11 Jun 2018 00:26:35 +0800</lastBuildDate>
     
-	<atom:link href="https://ray-g.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://ray-g.github.io/ml/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -32,40 +32,6 @@ Herbert A. Simon 曾经对学习下过一个定义“如果一个系统能够通
 这个听起来机器学习似乎有点不那么靠谱了。
 但是，现实中我们处理的数据是独立同分布的数据，即每个数据个体不会影响其它个体，且每个数据的个体的分布都是一样的， 这样才有一定的模式可供我们来学习，否则个体互相关联或分布都不一样的话，那每一个个体都是单独且互相不一样的存在，是无规律可言的。
 在独立同分布的前提下，那么我们要处理的数据集X其实就是未知数据集Z的一个采样，也就是\( X \in Z \)。 我们要做的事情，也就是需要通过样本来推断整体，通过身边的已知事物来认识这个世界。听起来要好多了，因为我们人类一直都是这样做的。</description>
-    </item>
-    
-    <item>
-      <title>Git Snippts</title>
-      <link>https://ray-g.github.io/others/git-snippts/</link>
-      <pubDate>Mon, 11 Jun 2018 00:05:12 +0800</pubDate>
-      
-      <guid>https://ray-g.github.io/others/git-snippts/</guid>
-      <description> Fetch all submodules after clone From the root of the repo just run:
-git submodule update --init  Sync fork # Step 1 clone fork git clone git@github.com:&amp;lt;USERNAME&amp;gt;/&amp;lt;FORK-REPO&amp;gt;.git # Step 2, cd to the repo git remote add upstream git://github.com/ORIGINAL-DEV-USERNAME/REPO-YOU-FORKED-FROM.git git fetch upstream git pull upstream master git push  </description>
-    </item>
-    
-    <item>
-      <title>Setting Up The Blog</title>
-      <link>https://ray-g.github.io/others/setting-up-the-blog/</link>
-      <pubDate>Sun, 10 Jun 2018 13:51:53 +0800</pubDate>
-      
-      <guid>https://ray-g.github.io/others/setting-up-the-blog/</guid>
-      <description>This blog is built with Hugo and hosted on Github.
-Setting up Hugo site Install Hugo First we should have a Hugo installed, Install Hugo, or just download the binary from github.com/gohugoio/hugo.
-After Hugo installed, try verify it.
-$ hugo version Hugo Static Site Generator v0.41 linux/amd64 BuildDate: 2018-05-25T16:57:20Z  Create a New Site Hugo can generate layout of a new site very easy:
-$ hugo new site hugo-blog Congratulations!</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>https://ray-g.github.io/about/</link>
-      <pubDate>Sun, 10 Jun 2018 12:51:53 +0800</pubDate>
-      
-      <guid>https://ray-g.github.io/about/</guid>
-      <description> Ray Guo, a software engineer as well as a geek.
-Previousily focus on C/C++ for many years, then turned into a full-stack engineer. Currently has worked with following technologies:
- C/C++ Golang Python Ruby Shell JavaScript Docker Angular VueJS D3.js TensorFlow Pandas etc.  Archivements Patents  Granted Dynamic call tracking method based on CPU interrupt instructions to improve disassembly quality of indirect calls  </description>
     </item>
     
   </channel>
