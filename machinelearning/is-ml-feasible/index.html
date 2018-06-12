@@ -181,7 +181,7 @@
 这个坏事情发生的几率就会程指数级的减小，当N足够大的时候，这个几率就变的非常非常的小了。</p>
 
 <p>回到机器学习，我们在假设集<code>H</code>中任意取一个假设<code>h</code>，并且可以在已有的样本个数为<code>N</code>的样本数据集<code>D</code>上对其进行验证，
-得到样本内错误 <span  class="math">\( E_{in}(h) = \frac{1}{N}\sum_{n=1}^N[[h(x_{n} \neq y_{n})]] \)</span>，
+得到样本内错误 <span  class="math">\( E_{in}(h) = \frac{1}{N}\sum_{n=1}^N[[h(x_{n}) \neq y_{n}]] \)</span>，
 对于由<code>独立同分布 P</code>产生的样本集，那么对于样本外的错误 <span  class="math">\( E_{out}(h) = \varepsilon_{x\sim P}[[h(x) \neq f(x)]] \)</span>，
 将其带入 Hoeffding‘s Inequality：</p>
 
