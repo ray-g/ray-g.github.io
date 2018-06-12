@@ -115,7 +115,7 @@
       
       
       <br/>
-      <i class="fas fa-clock"></i> 2 min read 
+      <i class="fas fa-clock"></i> 3 min read 
       </span>  
   </div>    
   
@@ -236,11 +236,34 @@
 针对每一种类别，那一组的<code>h</code>应该都是几乎一样的，这样我们可以假设有一个函数 <span  class="math">\( m_{h}(N) \)</span>，
 用来表示随着<code>N</code>的增大，<code>H</code>中有效<code>h</code>的个数，那么，之前的不等式可以替换为：</p>
 
-<p>\[ \mathbb{P}[|E_{in} - E_{out}| &gt; \epsilon] \leq 2 \cdot m_{h}(N) \cdot exp(-2\epsilon^2N) \]</p>
+<p>\[ \mathbb{P}[\exists h \in H\, s.t. |E_{in}(h) - E_{out}(h)| &gt; \epsilon] \leq 2 \cdot m_{h}(N) \cdot exp(-2\epsilon^2N) \]</p>
 
-<p>根据 Vapnik-Chervonenkis (VC) bound, 当<code>N</code>趋于无限大时，有以下不等式：</p>
+<p>由于我们目前无法验证 <span  class="math">\( E_{out} \)</span>，我们取一个巧，我们再用同样的方式取另一个同样有<code>N</code>个数据的数据集<code>D'</code>，
+同时计算出对于<code>D'</code>的误差，记为<span  class="math">\( E^\prime_{in} \)</span>，然后来计算<span  class="math">\( E^\prime_{in} \)</span>与<span  class="math">\( E_{in} \)</span>的差距。
+由于大家都是独立同分布的数据，那么我们可以认为 <code>BAD h</code> of <span  class="math">\( | E_{in} - E_{out} | \frac{\rightarrow}{probably} \)</span> <code>BAD h</code> of <span  class="math">\( | E_{in} - E^\prime_{in} | \)</span>。那么，带入之前的不等式则有：</p>
 
-<p>\[ \mathbb{P}[|E_{in} - E_{out}| &gt; \epsilon] \leq 4 \cdot m_{h}(2N) \cdot exp(-\frac{1}{8} \cdot \epsilon^2N) \]</p>
+<p>\[ \frac{1}{2}\mathbb{P}[\exists h \in H\, s.t. |E_{in}(h) - E_{out}(h)| &gt; \epsilon] \]
+\[ \leq \mathbb{P}[\exists h \in H\, s.t. |E_{in}(h) - E^\prime_{in}(h)| &gt; \frac{\epsilon}{2}] \]</p>
+
+<p>因为是随机取出的<code>D'</code>，所以<span  class="math">\( E^\prime_{in} \)</span>有很大的概率不怎么好，这个概率就是第一个 <span  class="math">\( \frac{1}{2} \)</span>，
+那么我们想让坏事情出现的概率更严格，于是在不等式的右边也/2。</p>
+
+<p>现在，我们有了两个<code>N</code>个数据的数据集<code>D</code>以及<code>D'</code>，那么再把我们的<span  class="math">\( m_{h}(N) \)</span>请回来，则现在是<span  class="math">\( m_{h}(2N) \)</span>，
+那么，坏事情发生的概率</p>
+
+<p>\[ BAD \leq 2\mathbb{P}[\exists h \in H\, s.t. |E_{in}(h) - E^\prime_{in}(h)| &gt; \frac{\epsilon}{2}] \]
+\[ \leq 2m_{h}(2N)\mathbb{P}[fixed\, h\, s.t. |E_{in}(h) - E^\prime_{in}(h)| &gt; \frac{\epsilon}{2}] \]</p>
+
+<p>现在，无线多个的<code>H</code>变成了 <span  class="math">\( |H(x_1,...,x_{N},x^\prime_{1},...,x^\prime_{N})| \)</span>，union bound 为 <span  class="math">\(m_{h}(2N)\)</span>，
+再把Hoeffding请回来，考虑现在的数据集为<code>2N</code>，且一半的数量<code>N</code>是计算<span  class="math">\(E_{in}\)</span>的，剩下的另一半则是计算了<span  class="math">\(E^\prime_{in}\)</span>，
+那么则有 <span  class="math">\( |E_{in} - E^\prime_{in} | > \frac{\epsilon}{2} \leftrightarrow |E_{in} - \frac{E_{in}+E^\prime_{in}}{2}| > \frac{\epsilon}{4}\)</span>，我们仅仅是用了稍微小一些的数据集<code>2N</code>，稍微小一些的<span  class="math">\(\epsilon\)</span>，带回不等式中得到：</p>
+
+<p>\[ BAD \leq 2m_{h}(2N)\mathbb{P}[fixed\, h\, s.t. |E_{in}(h) - E^\prime_{in}(h)| &gt; \frac{\epsilon}{2}] \]
+\[ \leq 2m_{h}(2N) \cdot 2exp(-2(\frac{\epsilon}{4})^2N) \]</p>
+
+<p>这个也就是著名的 Vapnik-Chervonenkis (VC) bound, 我们把上面的不等式稍微整理一下：</p>
+
+<p>\[ \mathbb{P}[\exists h \in H\, s.t.|E_{in}(h) - E_{out}(h)| &gt; \epsilon] \leq 4 \cdot m_{h}(2N) \cdot exp(-\frac{1}{8} \cdot \epsilon^2N) \]</p>
 
 <p>所以，随着<code>M</code>的增大，其实是不需要担心的，我们之前定义的通过选最小的 <span  class="math">\( E_{in} \)</span> 演算法<code>A</code>，其实还是能找到最好的<code>g</code>的。</p>
 
