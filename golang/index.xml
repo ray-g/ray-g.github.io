@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golangs on RayG</title>
+    <link>https://ray-g.github.io/golang/</link>
+    <description>Recent content in Golangs on RayG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 12 Jun 2018 00:26:35 +0800</lastBuildDate>
+    
+	<atom:link href="https://ray-g.github.io/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>初学Golang易犯的错误</title>
+      <link>https://ray-g.github.io/golang/common-mistakes-for-newbies/</link>
+      <pubDate>Tue, 12 Jun 2018 00:26:35 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/golang/common-mistakes-for-newbies/</guid>
+      <description>Golang是Google推出的面向软件工程的，拥有GC的，高并发的语言。 初学Go的时候很可能犯一些错误，犯错误并不怕，可怕的是一直犯同一个</description>
+    </item>
+    
+  </channel>
+</rss>
