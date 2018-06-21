@@ -110,17 +110,17 @@
   
   <div class="col-sm-12 col-md-12">
     <span class="text-left post-date meta">
-            
-       
+      
+      
         <i class="fas fa-calendar-alt"></i> Jun 11, 2018
       
       
       
       
       <br/>
-      <i class="fas fa-clock"></i> 8 min read 
-      </span>  
-  </div>    
+      <i class="fas fa-clock"></i> 8 min read
+      </span>
+  </div>
   
   <p>在讨论机器是否可以学习之前，我们先来看看下面这个问题</p>
 
@@ -257,7 +257,7 @@
 <p>\[ BAD \leq 2\mathbb{P}[\exists h \in H\, s.t. |E_{in}(h) - E^\prime_{in}(h)| &gt; \frac{\epsilon}{2}] \]
 \[ \leq 2m_{h}(2N)\mathbb{P}[fixed\, h\, s.t. |E_{in}(h) - E^\prime_{in}(h)| &gt; \frac{\epsilon}{2}] \]</p>
 
-<p>现在，无线多个的<code>H</code>变成了 <span  class="math">\( |H(x_1,...,x_{N},x^\prime_{1},...,x^\prime_{N})| \)</span>，union bound 为 <span  class="math">\(m_{h}(2N)\)</span>，
+<p>现在，无限多个的<code>H</code>变成了 <span  class="math">\( |H(x_1,...,x_{N},x^\prime_{1},...,x^\prime_{N})| \)</span>，union bound 为 <span  class="math">\(m_{h}(2N)\)</span>，
 再把Hoeffding请回来，考虑现在的数据集为<code>2N</code>，且一半的数量<code>N</code>是计算<span  class="math">\(E_{in}\)</span>的，剩下的另一半则是计算了<span  class="math">\(E^\prime_{in}\)</span>，
 那么则有 <span  class="math">\( |E_{in} - E^\prime_{in} | > \frac{\epsilon}{2} \leftrightarrow |E_{in} - \frac{E_{in}+E^\prime_{in}}{2}| > \frac{\epsilon}{4}\)</span>，我们仅仅是用了稍微小一些的数据集<code>2N</code>，稍微小一些的<span  class="math">\(\epsilon\)</span>，带回不等式中得到：</p>
 
@@ -297,7 +297,10 @@
 <li>存在<code>数据</code>可以用来学习，否则巧妇难为无米之炊</li>
 </ol>
 
+    
+    
 </div>
+
             <div class="footer">
                 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 
