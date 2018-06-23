@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://ray-g.github.io/machinelearning/ml-basic-concepts/</loc>
+    <lastmod>2018-06-22T20:37:09+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://ray-g.github.io/others/jupyter-notebook-shortcuts/</loc>
     <lastmod>2018-06-21T21:23:29+08:00</lastmod>
   </url>
@@ -45,7 +50,7 @@
   
   <url>
     <loc>https://ray-g.github.io/machinelearning/</loc>
-    <lastmod>2018-06-11T00:26:35+08:00</lastmod>
+    <lastmod>2018-06-22T20:37:09+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -57,7 +62,7 @@
   
   <url>
     <loc>https://ray-g.github.io/</loc>
-    <lastmod>2018-06-21T21:23:29+08:00</lastmod>
+    <lastmod>2018-06-22T20:37:09+08:00</lastmod>
     <priority>0</priority>
   </url>
   

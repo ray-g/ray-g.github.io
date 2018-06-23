@@ -6,10 +6,19 @@
     <description>Recent content in Machinelearnings on RayG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 11 Jun 2018 00:26:35 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 22 Jun 2018 20:37:09 +0800</lastBuildDate>
     
 	<atom:link href="https://ray-g.github.io/machinelearning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>机器学习基本概念</title>
+      <link>https://ray-g.github.io/machinelearning/ml-basic-concepts/</link>
+      <pubDate>Fri, 22 Jun 2018 20:37:09 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/machinelearning/ml-basic-concepts/</guid>
+      <description>智能时代的到来 谈到比较火的概念，那么人工智能，深度学习以及区块链等都是最近比较火的关键字。 现如今，我们正处于信息时代之中，各种各样的数据正通</description>
+    </item>
     
     <item>
       <title>机器真的可以学习吗？</title>

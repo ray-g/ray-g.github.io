@@ -17,13 +17,13 @@
       <pubDate>Thu, 21 Jun 2018 21:23:29 +0800</pubDate>
       
       <guid>https://ray-g.github.io/others/jupyter-notebook-shortcuts/</guid>
-      <description> Jupyter Notebook has 2 Modes: Edit Mode and Command Mode.
+      <description>Jupyter Notebook has 2 Modes: Edit Mode and Command Mode.
 NOTE: If you are in Edit Mode, there is a pencil at the upper-right.
 Switch between modes Enter to enter Edit Mode from Command Mode
 ESC to return Command Mode from Edit Mode
-Show and edit shortcuts Shortcuts can be show by Help -&amp;gt; Keyboard Shortcuts
-And the shortcuts is also editable Help -&amp;gt; Edit Keyboard Shortcuts
-Default Shortcuts Shortcuts in Command Mode    Key Action     F find and replace   Ctrl-Shift-F open the command palette   Ctrl-Shift-P open the command palette   P open the command palette   Enter Enter Edit Mode   Ctrl-Enter run selected cells   Shift-Enter run cell and select below   Alt-Enter run cell and insert below   Y change cell to code   M change cell to markdown   R change cell to raw   1 change cell to heading 1   2 change cell to heading 2   3 change cell to heading 3   4 change cell to heading 4   5 change cell to heading 5   6 change cell to heading 6   Shift-Space scroll notebook up   Space scroll nobebook down   K select cell above   Up select cell above   J select cell below   Down select cell below   Shift-K extend selected cells above   Shift-Up extend selected cells above   Shift-J extend selected cells below   Shift-Down extend selected cells below   A insert cell above   B insert cell below   X cut selected cells   C copy selected cells   V paste cells below   Shift-V paste cells above   Z undo cell deletion   D, D delete selected cells   Shift-M merge selected cells, or current cell with cell below if only one cell is selected   Ctrl-S save and checkpoint   S save and checkpoint   L toggle line numbers   Shift-L toggles line numbers in all cells, and persist the setting   O toggle output of selected cells   Shift-O toggle output scrolling of selected cells   H show keyboard shorcuts   I, I interrupt the kernel   0, 0 restart the kernel (with dialog)   Ctrl-V dialog for paste from system clipboard   Esc close the pager   Q close the pager    Shortcuts in Edit Mode    Key Action     Esc enter command mode   Ctrl-M enter command mode   Ctrl-Shift-F open the command palette   Ctrl-Shift-P open the command palette   Ctrl-Enter run selected cells   Alt-Enter run cell and insert below   Shift-Enter run cell and select below   Ctrl-S Save and Checkpoint   Up move cursor up   Down move cursor down   Ctrl-Shift-Minus split cell at cursor   Tab code completion or indent   Shift-Tab tooltip   Ctrl-] indent   Ctrl-[ dedent   Ctrl-A select all   Ctrl-Y redo   Ctrl-Z undo   Ctrl-/ comment   Ctrl-D delete whole line   Ctrl-U undo selection   Alt-U redo selection   Insert toggle overwrite flag   Ctrl-Home go to cell start   Ctrl-Up go to cell start   Ctrl-End go to cell end   Ctrl-Down go to cell end   Ctrl-Left go one word left   Ctrl-Right go one word right   Ctrl-Backspace delete work before   Ctrl-Delete delete work after    </description>
+Show and edit shortcuts Shortcuts can be show by Help -&amp;gt; Keyboard Shortcuts.
+And the shortcuts is also editable Help -&amp;gt; Edit Keyboard Shortcuts.
+Default Shortcuts Follow are the default shortcuts of both Command Mode and Edit Mode.</description>
     </item>
     
     <item>
