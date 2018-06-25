@@ -10,8 +10,8 @@
     
     <meta name="generator" content="Hugo 0.41" />
     
-    <title>Git Snippts &middot; RayG</title>
-    <meta content="Git Snippts - RayG" property="og:title">
+    <title>Dockers &middot; RayG</title>
+    <meta content="Dockers - RayG" property="og:title">
     <meta content=" - " property="og:description">
     <!-- CSS -->
     
@@ -34,7 +34,9 @@
     <link rel="shortcut icon" href="/favicon.png">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
-    
+    <!-- RSS -->
+    <link href="https://ray-g.github.io/docker/index.xml" rel="alternate" type="application/rss+xml" title="RayG" />
+    <link href="https://ray-g.github.io/docker/index.xml" rel="feed" type="application/rss+xml" title="RayG" />
 
 	</head>
     <body class="theme-base-0d ">
@@ -105,71 +107,27 @@
 </div>
 
         <div class="content container">
-            <div class="post">
-  <h1>Git Snippts</h1>
-  
-  <div class="col-sm-12 col-md-12">
-    <span class="text-left post-date meta">
-      
-      
-        <i class="fas fa-calendar-alt"></i> Jun 11, 2018
-      
-      
-      
-      
-      <br/>
-      <i class="fas fa-clock"></i> 1 min read
-      </span>
-  </div>
-  
-  
-
-<h2 id="fetch-all-submodules-after-clone">Fetch all submodules after clone</h2>
-
-<p>From the root of the repo just run:</p>
-
-<pre><code class="language-bash">git submodule update --init
-</code></pre>
-
-<h2 id="sync-fork">Sync fork</h2>
-
-<pre><code class="language-bash"># Step 1 clone fork
-git clone git@github.com:&lt;USERNAME&gt;/&lt;FORK-REPO&gt;.git
-
-# Step 2, cd to the repo
-git remote add upstream git://github.com/ORIGINAL-DEV-USERNAME/REPO-YOU-FORKED-FROM.git
-git fetch upstream
-git pull upstream master
-git push
-</code></pre>
-
-    
-    
-</div>
+            <h1 class="title">Dockers</h1>
+<ul class="posts">
+    <li>
+        <span>
+            <a href="https://ray-g.github.io/docker/setup-robot-with-docker/">Setup Robot Environment With Docker</a>
+            
+            <time class="pull-right post-list">Jun 25, 2018</time>    
+            
+        </span>
+    </li><li>
+        <span>
+            <a href="https://ray-g.github.io/docker/setup-private-docker-registry/">Setup Private Docker Registry</a>
+            
+            <time class="pull-right post-list">Jun 25, 2018</time>    
+            
+        </span>
+    </li>
+</ul>
 
             <div class="footer">
-                <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
-
-<script type="text/javascript">
-    hljs.configure({languages: []});
-    hljs.initHighlightingOnLoad();
-</script>
-
-    
-<div id="graphcomment"></div>
-<script type="text/javascript">
-  window.graphcomment_id = 'ray-g-github-io';
-   
-  (function() {
-    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
-    gc.src = 'https://graphcomment.com/js/integration.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
-  })();
-</script>
+                
             </div>
         </div>
         

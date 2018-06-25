@@ -6,10 +6,33 @@
     <description>Recent content on RayG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Jun 2018 20:37:09 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 25 Jun 2018 13:36:11 +0800</lastBuildDate>
     
 	<atom:link href="https://ray-g.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Setup Robot Environment With Docker</title>
+      <link>https://ray-g.github.io/docker/setup-robot-with-docker/</link>
+      <pubDate>Mon, 25 Jun 2018 13:36:11 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/docker/setup-robot-with-docker/</guid>
+      <description>Robot framework plus selenium is quite suitable for UI automation testing.
+But it requires a GUI to open the browser and execute such test suites. Unfortunatly, most of the automation environments are headless servers, even if we can use virtual machines with virtual graphical environemnt, it is quite a performance overhead.
+With docker, we can save quite a lot of energy and make the automation quite easy. With the xvfb it is able to execute robot and selenium inside the docker.</description>
+    </item>
+    
+    <item>
+      <title>Setup Private Docker Registry</title>
+      <link>https://ray-g.github.io/docker/setup-private-docker-registry/</link>
+      <pubDate>Mon, 25 Jun 2018 13:34:13 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/docker/setup-private-docker-registry/</guid>
+      <description>What is docker registry Docs of Docker Registry
+Official Guide
+How to setup a docker registry Step 0 - Prerequisites  Ubuntu 16.04 Server. A non-root user with sudo privileges. A domain name that resolves the server.  Step 1 - Installing docker engine Docker Registry provided officially is a docker. We need a docker engine to run it.
+sudo apt-get update curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - sudo add-apt-repository &amp;quot;deb [arch=amd64] https://download.</description>
+    </item>
     
     <item>
       <title>机器学习基本概念</title>

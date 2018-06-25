@@ -10,8 +10,8 @@
     
     <meta name="generator" content="Hugo 0.41" />
     
-    <title>Git Snippts &middot; RayG</title>
-    <meta content="Git Snippts - RayG" property="og:title">
+    <title>Setup Robot Environment With Docker &middot; RayG</title>
+    <meta content="Setup Robot Environment With Docker - RayG" property="og:title">
     <meta content=" - " property="og:description">
     <!-- CSS -->
     
@@ -106,42 +106,80 @@
 
         <div class="content container">
             <div class="post">
-  <h1>Git Snippts</h1>
+  <h1>Setup Robot Environment With Docker</h1>
   
   <div class="col-sm-12 col-md-12">
     <span class="text-left post-date meta">
       
       
-        <i class="fas fa-calendar-alt"></i> Jun 11, 2018
+        <i class="fas fa-calendar-alt"></i> Jun 25, 2018
       
       
       
       
       <br/>
-      <i class="fas fa-clock"></i> 1 min read
+      <i class="fas fa-clock"></i> 2 min read
       </span>
   </div>
   
   
 
-<h2 id="fetch-all-submodules-after-clone">Fetch all submodules after clone</h2>
+<p>Robot framework plus selenium is quite suitable for UI automation testing.</p>
 
-<p>From the root of the repo just run:</p>
+<p>But it requires a GUI to open the browser and execute such test suites.
+Unfortunatly, most of the automation environments are headless servers,
+even if we can use virtual machines with virtual graphical environemnt,
+it is quite a performance overhead.</p>
 
-<pre><code class="language-bash">git submodule update --init
+<p>With docker, we can save quite a lot of energy and make the automation quite easy.
+With the <code>xvfb</code> it is able to execute robot and selenium inside the docker.</p>
+
+<p>Here is the solution:</p>
+
+<h2 id="dockerfile">Dockerfile</h2>
+
+<pre><code class="language-dockerfile">FROM ubuntu:16.04
+
+RUN apt-get update &amp;&amp; \
+DEBIAN_FRONTEND=noninteractive \
+apt-get -y install \
+sudo \
+python2.7 \
+python-pip \
+libffi-dev \
+libssl-dev \
+dbus-x11 \
+fonts-dejavu fonts-liberation hicolor-icon-theme \
+xvfb \
+firefox=45.0.2+build1-0ubuntu1
+
+RUN pip install \
+robotframework \
+robotframework-selenium2library \
+robotframework-sshlibrary \
+pyvmomi \
+pysphere
+
+RUN export uid=1000 gid=1000 &amp;&amp; \
+mkdir -p /home/robot &amp;&amp; \
+echo “robot:x:${uid}:${gid}:robot,,,:/home/robot:/bin/bash” &gt;&gt; /etc/passwd &amp;&amp; \
+echo “robot:x:${uid}:” &gt;&gt; /etc/group &amp;&amp; \
+usermod –aG sudo robot &amp;&amp; \
+chown ${uid}:${gid} -R /home/robot
+
+USER robot
+ENV HOME /home/robot
+RUN mkdir /home/robot/working_dir
+ENV ENV_ROBOT_PATH /home/robot/working_dir
 </code></pre>
 
-<h2 id="sync-fork">Sync fork</h2>
+<h2 id="usage">Usage</h2>
 
-<pre><code class="language-bash"># Step 1 clone fork
-git clone git@github.com:&lt;USERNAME&gt;/&lt;FORK-REPO&gt;.git
-
-# Step 2, cd to the repo
-git remote add upstream git://github.com/ORIGINAL-DEV-USERNAME/REPO-YOU-FORKED-FROM.git
-git fetch upstream
-git pull upstream master
-git push
-</code></pre>
+<ol>
+<li>In the folder where the Dockerfile is, build docker image: <code>docker build --rm -t robot-env:ff45gui .</code></li>
+<li>One time run: <code>docker run --rm -e DISPLAY=$DISPLAY -e ENV_TARGET_IP=&lt;your-target-ip&gt; -v /tmp/.X11-unix:/tmp/.X11-unix -v &lt;path-to-your-robot-file&gt;:/home/robot/working_dir -w /home/robot /working_dir robot-env:ff45gui pybot &lt;path-to-your-robot-file&gt;</code></li>
+<li>Multiple times run: <code>docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v &lt;path-to-your-robot-file&gt;:/home/robot/working_dir -w /home/robot/working_dir robot-env:f f45gui</code>, and then in the promote execute robot with <code>ENV_TARGET_IP=&lt;your-target-ip&gt; pybot &lt;path-to-your-robot-file&gt;</code></li>
+</ol>
 
     
     
