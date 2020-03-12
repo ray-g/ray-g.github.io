@@ -21,15 +21,6 @@
     </item>
     
     <item>
-      <title>一致性哈希</title>
-      <link>https://ray-g.github.io/architect/consistent_hashing/</link>
-      <pubDate>Sun, 24 Jun 2018 15:22:47 +0800</pubDate>
-      
-      <guid>https://ray-g.github.io/architect/consistent_hashing/</guid>
-      <description>随着业务的发展，单靠数据库，比如MySQL实例来支撑业务的话，随着QPS的增高，表现会越来越差。 当QPS增加到一定程度的话，继续来依靠MyS</description>
-    </item>
-    
-    <item>
       <title>乐观锁</title>
       <link>https://ray-g.github.io/architect/optimistic_lock/</link>
       <pubDate>Sun, 13 Aug 2017 14:13:34 +0800</pubDate>

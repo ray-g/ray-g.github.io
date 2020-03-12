@@ -53,15 +53,6 @@ With docker, we can save quite a lot of energy and make the automation quite eas
     </item>
     
     <item>
-      <title>一致性哈希</title>
-      <link>https://ray-g.github.io/architect/consistent_hashing/</link>
-      <pubDate>Sun, 24 Jun 2018 15:22:47 +0800</pubDate>
-      
-      <guid>https://ray-g.github.io/architect/consistent_hashing/</guid>
-      <description>随着业务的发展，单靠数据库，比如MySQL实例来支撑业务的话，随着QPS的增高，表现会越来越差。 当QPS增加到一定程度的话，继续来依靠MyS</description>
-    </item>
-    
-    <item>
       <title>机器学习基本概念</title>
       <link>https://ray-g.github.io/machinelearning/ml-basic-concepts/</link>
       <pubDate>Fri, 22 Jun 2018 20:37:09 +0800</pubDate>
