@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en-us" class="wf-firasans-n4-active wf-active">
+	<head>
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Enable responsiveness on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    
+    
+    <meta name="generator" content="Hugo 0.59.0" />
+    
+    <title>Golang defer &middot; RayG</title>
+    <meta content="Golang defer - RayG" property="og:title">
+    <meta content=" - " property="og:description">
+    <!-- CSS -->
+    
+    <link rel="stylesheet" href="https://ray-g.github.io/css/print.css" media="print">
+    <link rel="stylesheet" href="https://ray-g.github.io/css/poole.css">
+    <link rel="stylesheet" href="https://ray-g.github.io/css/hyde.css">
+    <!-- Font-Awesome -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+    <!-- highlight.js-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+    <!-- Customised CSS -->
+    <link rel="stylesheet" href="https://ray-g.github.io/css/custom.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+	</head>
+    <body class="theme-base-0d ">
+        <div class="sidebar">
+  <div class="container text-center ">
+    <div class="sidebar-about text-center">
+      <a href="https://ray-g.github.io/"><h1 class="brand">RayG</h1></a>
+       <img src="/img/rayg.png" alt="Author Image" class="img-circle headshot center"> 
+      <p class="lead">
+          Tech Notes 
+      </p>
+    </div>
+    
+<div>
+	<ul class="sidebar-nav">
+		
+		
+				<li>
+					<a href="/architect/"> <span>Architect</span></a>
+				</li>
+				<li>
+					<a href="/golang/"> <span>Golang</span></a>
+				</li>
+				<li>
+					<a href="/machinelearning/"> <span>Machine Learning</span></a>
+				</li>
+				<li>
+					<a href="/cloud/"> <span>Cloud</span></a>
+				</li>
+				<li>
+					<a href="/docker/"> <span>Docker</span></a>
+				</li>
+				<li>
+					<a href="/database/"> <span>Database</span></a>
+				</li>
+				<li>
+					<a href="/others/"> <span>Others</span></a>
+				</li>
+				<li>
+					<a href="https://github.com/ray-g"> <span>Codes</span></a>
+				</li>
+				<li>
+					<a href="/about/"> <span>About</span></a>
+				</li>
+		</li>
+	</ul>
+</div>
+
+    <p>
+      <section class="row text-center">
+	
+	
+	
+	&nbsp;<a href="https://github.com/ray-g"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	&nbsp;<a href="https://linkedin.com/in/ray-guo-15145024"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	&nbsp;<a href="https://stackoverflow.com/users/7188458/ray-g"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	&nbsp;<a href="mailto:ray_g@live.com"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+</section>
+
+    </p>
+    <p class="copyright">&copy; 2020 RayG.
+      <a href="https://creativecommons.org/licenses/by/4.0">Some Rights Reserved</a>.<br/>Built with <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/htr3n/hyde-hyde">hyde-hyde</a>.
+    </p>
+  </div>
+  <div>
+  </div>
+</div>
+
+        <div class="content container">
+            <div class="post">
+  <h1>Golang defer</h1>
+  
+  <div class="col-sm-12 col-md-12">
+    <span class="text-left post-date meta">
+      
+      
+        <i class="fas fa-calendar-alt"></i> Nov 6, 2017
+      
+      
+      
+      
+      <br/>
+      <i class="fas fa-clock"></i> 5 min read
+      </span>
+  </div>
+  
+
+  
+<aside>
+    <header>
+        <b>Table of Content</b>
+    </header>
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#作用">作用</a>
+<ul>
+<li><a href="#延迟调用">延迟调用</a></li>
+<li><a href="#后进先出调用">后进先出调用</a></li>
+<li><a href="#defer用做recover">defer用做recover</a></li>
+</ul></li>
+<li><a href="#defer-如何起作用">defer 如何起作用</a>
+<ul>
+<li><a href="#deferproc">deferproc</a></li>
+<li><a href="#deferreturn">deferreturn</a></li>
+</ul></li>
+<li><a href="#总结">总结</a></li>
+</ul></li>
+</ul>
+</nav>
+    <p>---</p>
+</aside>
+
+
+
+  <article>
+    
+
+<h2 id="作用">作用</h2>
+
+<h3 id="延迟调用">延迟调用</h3>
+
+<p>被defer的函数调用会延迟到当前函数结束的时候再进行调用，defer调用完毕后，函数的返回值才会被返回给上一级调用者。</p>
+
+<p>比如这样的例子</p>
+
+<pre><code class="language-golang">package main
+
+func main() {
+    defer println(1)
+    println(2)
+}
+</code></pre>
+
+<p>其输出的结果是</p>
+
+<pre><code class="language-shell">2
+1
+</code></pre>
+
+<h3 id="后进先出调用">后进先出调用</h3>
+
+<p>对defer的多次调用，是后进先出的压栈式的调用，也就是说，最后的一个defer会最先调用。</p>
+
+<p>比如</p>
+
+<pre><code class="language-golang">package main
+
+func main() {
+    for i:=0; i&lt;3; i++ {
+        defer println(i)
+    }
+}
+</code></pre>
+
+<p>输出结果如下：</p>
+
+<pre><code class="language-shell">2
+1
+0
+</code></pre>
+
+<h3 id="defer用做recover">defer用做recover</h3>
+
+<p>defer除了日常作为随后保证关闭资源的操作外，还会作为异常recover。</p>
+
+<pre><code class="language-golang">package main
+
+func main() {
+    defer func() {
+        if e := recover(); e != nil {
+            println(&quot;recovered&quot;)
+        }
+    }()
+
+    panic(&quot;gone&quot;)
+}
+</code></pre>
+
+<p>输出结果如下:</p>
+
+<pre><code class="language-shell">recovered
+</code></pre>
+
+<h2 id="defer-如何起作用">defer 如何起作用</h2>
+
+<p>我们把有defer的代码反汇编，那么可以看到如下的输出:</p>
+
+<pre><code class="language-shell">go tool compile -S ./main.go
+...
+        0x0035 00053 (./main.go:5)      MOVL    $8, (SP)
+        0x003c 00060 (./main.go:5)      PCDATA  $0, $1
+        0x003c 00060 (./main.go:5)      LEAQ    &quot;&quot;.wrap·1·f(SB), CX
+        0x0043 00067 (./main.go:5)      PCDATA  $0, $0
+        0x0043 00067 (./main.go:5)      MOVQ    CX, 8(SP)
+        0x0048 00072 (./main.go:5)      MOVQ    AX, 16(SP)
+        0x004d 00077 (./main.go:5)      CALL    runtime.deferproc(SB)
+        0x0052 00082 (./main.go:5)      TESTL   AX, AX
+        0x0054 00084 (./main.go:5)      JNE     88
+        0x0056 00086 (./main.go:5)      JMP     33
+        0x0058 00088 (./main.go:5)      XCHGL   AX, AX
+        0x0059 00089 (./main.go:5)      CALL    runtime.deferreturn(SB)
+        0x005e 00094 (./main.go:5)      MOVQ    32(SP), BP
+        0x0063 00099 (./main.go:5)      ADDQ    $40, SP
+        0x0067 00103 (./main.go:5)      RET
+...
+</code></pre>
+
+<p>我们可以看到，有defer的地方被拆成了两个步骤来运行，<code>runtime.deferproc</code>和<code>runtime.deferreturn</code>。</p>
+
+<p><code>defer println(1)</code>这句话被编译成了两个过程，先执行<code>runtime.deferproc</code>生成println函数及其相关参数的描述结构体，
+然后将其挂载到当前g的<code>_defer</code>指针上。</p>
+
+<h3 id="deferproc">deferproc</h3>
+
+<pre><code class="language-golang">// Create a new deferred function fn with siz bytes of arguments.
+// The compiler turns a defer statement into a call to this.
+//go:nosplit
+func deferproc(siz int32, fn *funcval) { // arguments of fn follow fn
+    if getg().m.curg != getg() {
+        // go code on the system stack can't defer
+        throw(&quot;defer on system stack&quot;)
+    }
+
+    // the arguments of fn are in a perilous state. The stack map
+    // for deferproc does not describe them. So we can't let garbage
+    // collection or stack copying trigger until we've copied them out
+    // to somewhere safe. The memmove below does that.
+    // Until the copy completes, we can only call nosplit routines.
+    sp := getcallersp(unsafe.Pointer(&amp;siz))
+    argp := uintptr(unsafe.Pointer(&amp;fn)) + unsafe.Sizeof(fn)
+    callerpc := getcallerpc() // 存储的是 caller 中，call deferproc 的下一条指令的地址
+
+    d := newdefer(siz)  // &lt;- 这里是重点
+    if d._panic != nil {
+        throw(&quot;deferproc: d.panic != nil after newdefer&quot;)
+    }
+    d.fn = fn
+    d.pc = callerpc
+    d.sp = sp
+    switch siz {
+    case 0:
+        // Do nothing.
+    case sys.PtrSize:
+        *(*uintptr)(deferArgs(d)) = *(*uintptr)(unsafe.Pointer(argp))
+    default:
+        memmove(deferArgs(d), unsafe.Pointer(argp), uintptr(siz))
+    }
+
+    // deferproc returns 0 normally.
+    // a deferred func that stops a panic
+    // makes the deferproc return 1.
+    // the code the compiler generates always
+    // checks the return value and jumps to the
+    // end of the function if deferproc returns != 0.
+    return0()
+    // No code can go here - the C return register has
+    // been set and must not be clobbered.
+}
+</code></pre>
+
+<p>关键的地方是那个<code>newdefer</code>，名字很好，一眼就让我们抓到了重点。</p>
+
+<pre><code class="language-golang">func newdefer(siz int32) *_defer {
+    var d *_defer
+    sc := deferclass(uintptr(siz))
+    gp := getg()
+    if sc &lt; uintptr(len(p{}.deferpool)) {
+        // 从 p 结构体的 deferpool 中获取可用的 defer struct
+        // 代码比较简单，省略
+    }
+    if d == nil {
+        // 上面没有成功获取到可用的 defer struct
+        // 因此需要切换到 g0 生成新的 defer struct
+        systemstack(func() {
+            total := roundupsize(totaldefersize(uintptr(siz)))
+            d = (*_defer)(mallocgc(total, deferType, true))
+        })
+    }
+    // defer func 的参数大小
+    d.siz = siz
+    // 链表链接
+    // 后 defer 的在前，类似一个栈结构
+    d.link = gp._defer
+    // 修改当前 g 的 defer 结构体，指向新的 defer struct
+    gp._defer = d
+    return d
+}
+</code></pre>
+
+<p><code>newdefer</code>将一个重要的<code>_defer</code>结构体挂到了goroutine的defer链上。
+中间大段的注释显示了这与recover的流程关系非常大。</p>
+
+<pre><code class="language-golang">type _defer struct {
+    siz     int32    // 函数的参数总大小
+    started bool     // TODO defer 是否已开始执行?
+    sp      uintptr  // 存储调用 defer 函数的函数的 sp 寄存器值
+    pc      uintptr  // 存储 call deferproc 的下一条汇编指令的指令地址
+    fn      *funcval // 描述函数的变长结构体，包括函数地址及参数
+    _panic  *_panic  // 正在执行 defer 的 panic 结构体
+    link    *_defer  // 链表指针
+}
+</code></pre>
+
+<h3 id="deferreturn">deferreturn</h3>
+
+<p>deferreturn会先判断链表中是否有defer，然后jmpdefer去做defer该干的事情，
+然后，jmpdefer会的跳回deferreturn之前，如果此时defer链表中还有未处理的defer，那么就再来一把，
+如果链表空了，那就return，defer的处理也就结束了。</p>
+
+<pre><code class="language-golang">// Run a deferred function if there is one.
+// The compiler inserts a call to this at the end of any
+// function which calls defer.
+// If there is a deferred function, this will call runtime·jmpdefer,
+// which will jump to the deferred function such that it appears
+// to have been called by the caller of deferreturn at the point
+// just before deferreturn was called. The effect is that deferreturn
+// is called again and again until there are no more deferred functions.
+// Cannot split the stack because we reuse the caller's frame to
+// call the deferred function.
+
+// The single argument isn't actually used - it just has its address
+// taken so it can be matched against pending defers.
+//go:nosplit
+func deferreturn(arg0 uintptr) {
+    gp := getg()
+    d := gp._defer
+    if d == nil {
+        return
+    }
+    sp := getcallersp(unsafe.Pointer(&amp;arg0))
+    if d.sp != sp {
+        return
+    }
+
+    // Moving arguments around.
+    //
+    // Everything called after this point must be recursively
+    // nosplit because the garbage collector won't know the form
+    // of the arguments until the jmpdefer can flip the PC over to
+    // fn.
+    switch d.siz {
+    case 0:
+        // Do nothing.
+    case sys.PtrSize:
+        *(*uintptr)(unsafe.Pointer(&amp;arg0)) = *(*uintptr)(deferArgs(d))
+    default:
+        memmove(unsafe.Pointer(&amp;arg0), deferArgs(d), uintptr(d.siz))
+    }
+    fn := d.fn
+    d.fn = nil
+    gp._defer = d.link
+    freedefer(d)
+    jmpdefer(fn, uintptr(unsafe.Pointer(&amp;arg0)))
+}
+</code></pre>
+
+<p>我们来看看对链表进行循环遍历的jmpdefer</p>
+
+<pre><code class="language-golang">TEXT runtime·jmpdefer(SB), NOSPLIT, $0-16
+    MOVQ    fv+0(FP), DX      // defer 的函数的地址
+    MOVQ    argp+8(FP), BX    // caller sp
+    LEAQ    -8(BX), SP        // caller sp after CALL
+    MOVQ    -8(SP), BP        // 在 framepointer enable 的时候，不影响函数栈的结构
+    SUBQ    $5, (SP)          // call 指令长度为 5，因此通过将 ret addr 减 5，能够使 deferreturn 自动被反复调用
+    MOVQ    0(DX), BX
+    JMP     BX                // 调用被 defer 的函数
+</code></pre>
+
+<p>哈，我们可以看到，在jmpdefer所调用的函数返回时，会回到调用deferreturn的函数，
+并重新执行deferreturn，每次执行都会使g的defer链表表头被消耗掉，
+直到进入deferreturn时d == nil并返回。至此便完成了整个defer的流程。</p>
+
+<p>这里比较粗暴的是直接把栈上存储的pc寄存器的值减了5，
+注释中说是因为call deferreturn这条指令长度为5，这是怎么算出来的呢:</p>
+
+<pre><code class="language-shell">        0x0059 00089 (./main.go:5)      CALL    runtime.deferreturn(SB)
+        0x005e 00094 (./main.go:5)      MOVQ    32(SP), BP
+</code></pre>
+
+<p>这条指令长度就是5,所以这里是用汇编非常trick的实现了一个for循环&hellip;</p>
+
+<p>那么deferreturn + jmpdefer就可以使_defer链表被消费完，那为什么还要编译出多次的deferreturn调用呢？
+可能是因为deferproce和deferreturn是成对出现的，这样做可能比较容易实现吧。</p>
+
+<h2 id="总结">总结</h2>
+
+<p>defer是一个面向编译器的声明，他会让编译器做两件事：</p>
+
+<ol>
+<li>编译器会将defer声明编译为runtime.deferproc(fn)，这样运行时，会调用runtime.deferproc，在deferproc中将所有defer挂到goroutine的defer链上</li>
+<li>编译器会在函数return之前，增加runtime.deferreturn调用；这样运行时，开始处理前面挂在defer链上的所有defer。</li>
+</ol>
+
+  </article>
+    
+    
+</div>
+
+            <div class="footer">
+                <script src="https://unpkg.com/mermaid@8.4.8/dist/mermaid.min.js?1583990982"></script>
+<script>
+    mermaid.initialize({
+        theme: 'default',  
+        startOnLoad: true
+    });
+    (function() {
+        var codelist = document.querySelectorAll('code.language-mermaid');
+        if (codelist && 'length' in codelist && codelist.length > 0) {
+            for (var i = 0; i < codelist.length; i++) {
+            var div = document.createElement('div');
+            div.className = 'mermaid';
+            div.setAttribute('align', 'center');
+            div.innerHTML = codelist[i].innerHTML.replace(/&amp;/g, '&');
+            codelist[i].replaceWith(div);
+        }
+    }
+    })();
+</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/toml.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/java.min.js"></script>
+
+<script type="text/javascript">
+    hljs.configure({languages: []});
+    hljs.initHighlightingOnLoad();
+</script>
+
+    
+<div id="graphcomment"></div>
+<script type="text/javascript">
+  window.graphcomment_id = 'ray-g-github-io';
+  (function() {
+
+    
+    
+    
+    if (location.hostname === "localhost" ||
+       	location.hostname === "127.0.0.1" ||
+       	location.hostname === "") {
+        return;
+		}
+
+     
+    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+    gc.src = 'https://graphcomment.com/js/integration.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+  })();
+</script>
+
+            </div>
+        </div>
+        
+        
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-121338579-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </body>
+</html>

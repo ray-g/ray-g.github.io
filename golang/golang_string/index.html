@@ -10,8 +10,8 @@
     
     <meta name="generator" content="Hugo 0.59.0" />
     
-    <title>Jupyter Notebook Shortcuts &middot; RayG</title>
-    <meta content="Jupyter Notebook Shortcuts - RayG" property="og:title">
+    <title>Golang string &middot; RayG</title>
+    <meta content="Golang string - RayG" property="og:title">
     <meta content=" - " property="og:description">
     <!-- CSS -->
     
@@ -118,19 +118,19 @@
 
         <div class="content container">
             <div class="post">
-  <h1>Jupyter Notebook Shortcuts</h1>
+  <h1>Golang string</h1>
   
   <div class="col-sm-12 col-md-12">
     <span class="text-left post-date meta">
       
       
-        <i class="fas fa-calendar-alt"></i> Jun 21, 2018
+        <i class="fas fa-calendar-alt"></i> Oct 13, 2017
       
       
       
       
       <br/>
-      <i class="fas fa-clock"></i> 3 min read
+      <i class="fas fa-clock"></i> 4 min read
       </span>
   </div>
   
@@ -144,12 +144,15 @@
 <ul>
 <li>
 <ul>
-<li><a href="#switch-between-modes">Switch between modes</a></li>
-<li><a href="#show-and-edit-shortcuts">Show and edit shortcuts</a></li>
-<li><a href="#default-shortcuts">Default Shortcuts</a>
+<li><a href="#字符串的本质">字符串的本质</a></li>
+<li><a href="#字符串的使用">字符串的使用</a>
 <ul>
-<li><a href="#shortcuts-in-command-mode">Shortcuts in <code>Command Mode</code></a></li>
-<li><a href="#shortcuts-in-edit-mode">Shortcuts in <code>Edit Mode</code></a></li>
+<li><a href="#遍历字符串">遍历字符串</a></li>
+<li><a href="#截取字符串">截取字符串</a></li>
+<li><a href="#改变中某个字符">改变中某个字符</a></li>
+<li><a href="#计算长度">计算长度</a></li>
+<li><a href="#字符串的拼接">字符串的拼接</a></li>
+<li><a href="#字符串与数字的转换">字符串与数字的转换</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -162,443 +165,230 @@
   <article>
     
 
-<p>Jupyter Notebook has 2 Modes: <code>Edit Mode</code> and <code>Command Mode</code>.</p>
+<h2 id="字符串的本质">字符串的本质</h2>
 
-<p><em>NOTE:</em> If you are in <code>Edit Mode</code>, there is a pencil at the upper-right.</p>
+<p>Golang中的string，实际是一个不可变的字节序列，每个字节都是UTF-8编码的文本。
+虽然每一个字符串都有长度，但是这个长度和数组不一样，不同长度的字符串还是同样的string类型。</p>
 
-<h2 id="switch-between-modes">Switch between modes</h2>
+<p>我们来看一下字符串的结构，在reflect.StringHeader中，我们可以看到定义：</p>
 
-<p><code>Enter</code> to enter <code>Edit Mode</code> from <code>Command Mode</code></p>
+<pre><code class="language-golang">type StringHeader struct {
+    Data uintprt
+    Len  int
+}
+</code></pre>
 
-<p><code>ESC</code> to return <code>Command Mode</code> from <code>Edit Mode</code></p>
+<p>从这里我们可以看到，string其实是一个结构，Data持有的是底层字节数组，Len就是字符串的长度了。
+因此对string的复制，也就是StringHeader结构体的复制，并不涉及到底层字节数组的复制，所以没有什么消耗。
+另外，相同的字符串面值的常量，对应的一般都是同一个字节数组。
+string虽然底层不是切片，但是支持切片的操作。</p>
 
-<h2 id="show-and-edit-shortcuts">Show and edit shortcuts</h2>
+<h2 id="字符串的使用">字符串的使用</h2>
 
-<p>Shortcuts can be show by <code>Help -&gt; Keyboard Shortcuts</code>.</p>
+<h3 id="遍历字符串">遍历字符串</h3>
 
-<p>And the shortcuts is also editable <code>Help -&gt; Edit Keyboard Shortcuts</code>.</p>
+<p>遍历字符串，是使用<code>range</code>来进行的，虽然for也可以遍历字符串的内容，但是会有问题：</p>
 
-<h2 id="default-shortcuts">Default Shortcuts</h2>
+<pre><code class="language-golang">func main() {
+    s := &quot;123&quot;
+    for i := 0; i &lt; len(s); i++ {
+        fmt.Println(s[i])
+    }
+}
+</code></pre>
 
-<p>Follow are the default shortcuts of both <code>Command Mode</code> and <code>Edit Mode</code>.</p>
+<p>output:</p>
 
-<h3 id="shortcuts-in-command-mode">Shortcuts in <code>Command Mode</code></h3>
+<pre><code class="language-shell">49
+50
+51
+</code></pre>
+
+<p>等会儿，这个有点和想象的不一样啊，为什么不是123的输出呢？
+这是因为Golang是UTF-8编码，123对于的码的值就是这些数字。
+我们可以转换成字符再打印。但是还会有其他问题</p>
+
+<pre><code class="language-golang">func main() {
+    s := &quot;hi,世界&quot;
+    for i := 0; i &lt; len(s); i++ {
+        fmt.Printf(&quot;%c\n&quot;, s[i], s[i])
+    }
+}
+</code></pre>
+
+<p>output：</p>
+
+<pre><code class="language-shell">h
+i
+,
+ä
+¸
+
+ç
+
+
+</code></pre>
+
+<p>这里又出现乱码了，这个是因为UTF-8在编码的时候，是变长编码的，对于ASCII是采用一个byte来编码的，
+而对于其他Unicode字符来说则是两个字节的编码。我们通过for来遍历，其实还是在遍历底层的字节序列。</p>
+
+<p>对于这个，我们当然可以转成Golang中的<code>[]rune</code>类型。（话说用rune，符文，这个词，对于西方世界还是挺形象的）。
+<code>[]rune</code>其实是<code>[]int32</code>的别名，而不是重新定义的新类型。</p>
+
+<pre><code class="language-golang">func main() {
+    s := &quot;hi,世界&quot;
+    r := []rune(s)
+    for i := 0; i &lt; len(r); i++ {
+        fmt.Printf(&quot;%c\n&quot;, r[i])
+    }
+}
+</code></pre>
+
+<p>output：</p>
+
+<pre><code class="language-shell">h
+i
+,
+世
+界
+</code></pre>
+
+<p>这次就对了。</p>
+
+<p>但是一般情况下，我们不需要这么麻烦，是可以用range来遍历的：</p>
+
+<pre><code class="language-golang">func main() {
+    s := &quot;hi,世界&quot;
+    for _, v := range s {
+        fmt.Printf(&quot;%c\n&quot;, v)
+    }
+}
+</code></pre>
+
+<p>output：</p>
+
+<pre><code class="language-shell">h
+i
+,
+世
+界
+</code></pre>
+
+<p>这是因为Golang中的range针对string做了特殊的处理。</p>
+
+<h3 id="截取字符串">截取字符串</h3>
+
+<p>截取其中一部分字符串是非常容易的，因为字符串是支持切片操作的。只要<code>substr := str[m:n]</code>即可。</p>
+
+<h3 id="改变中某个字符">改变中某个字符</h3>
+
+<p>因为字符串是不支持直接修改的，所以必须曲线救国。
+我们已经知道，字符串是UTF-8编码的了，那么对于只有ASCII的包含非ASCII字符的两种string，可以有不同的改法。</p>
+
+<p>如果字符串只包含ASCII字符，那么可以将<code>string</code>转换成<code>[]byte</code>，然后再来修改。</p>
+
+<pre><code class="language-golang">func main() {
+    s := &quot;123&quot;
+    bs := []byte(s)
+    bs[1] = 'a'
+    s = string(bs)
+    fmt.Println(s)
+    // “1a3”
+}
+</code></pre>
+
+<p>如果字符串中包含Unicode字符，那么需要将<code>string</code>转换成<code>[]rune</code>，然后再进行修改。</p>
+
+<pre><code class="language-golang">func main() {
+    s := &quot;hi,世界&quot;
+    rs := []rune(s)
+    rs[3] = 'w'
+    s = string(rs)
+    fmt.Println(s)
+    // “hi,w界”
+}
+</code></pre>
+
+<h3 id="计算长度">计算长度</h3>
+
+<p>虽然string支持<code>len</code>操作，但是这个取出来的是底层byte数组的长度。
+所以如果字符串全部都是ASCII，可以使用len来获取长度，如果包含unicode，则需要使用<code>utf8.RuneCountInString(str)</code>。</p>
+
+<pre><code class="language-golang">func main() {
+    s := &quot;123&quot;
+    println(len(s))  // 3
+    s = &quot;hi,世界&quot;
+    println(len(s))  // 9
+    println(utf8.RuneCountInString(s)) // 5
+}
+</code></pre>
+
+<h3 id="字符串的拼接">字符串的拼接</h3>
+
+<p>字符串的拼接可以有以下几种方式：</p>
+
+<ol>
+<li>最简单的，使用<code>+</code></li>
+<li>最高效的，使用字节拼接</li>
+
+<li><p>使用strings包的方法</p>
+
+<pre><code class="language-golang">func main() {
+s1 := &quot;hi&quot;
+s2 := &quot;世界&quot;
+
+// 1
+println(s1 + s2)
+
+// 2
+var buf bytes.Buffer
+buf.WriteString(s1)
+buf.WriteString(s2)
+println(buf.String())
+
+// 3
+str := strings.Join([]string{s1, s2}, &quot;&quot;)
+println(str)
+}
+</code></pre></li>
+</ol>
+
+<h3 id="字符串与数字的转换">字符串与数字的转换</h3>
+
+<p>在实际的使用过程中，我们经常会需要将字符串与数字进行转换，可以通过<code>strconv</code>提供的各种函数来实现。</p>
 
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Action</th>
+<th>源类型</th>
+<th>目标类型</th>
+<th>方式</th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td>F</td>
-<td>find and replace</td>
+<td>string</td>
+<td>int</td>
+<td>string, _ := strconv.Atoi(“1”)</td>
 </tr>
 
 <tr>
-<td>Ctrl-Shift-F</td>
-<td>open the command palette</td>
+<td>int</td>
+<td>string</td>
+<td>int := strconv.Itoa(1)</td>
 </tr>
 
 <tr>
-<td>Ctrl-Shift-P</td>
-<td>open the command palette</td>
+<td>string</td>
+<td>int64</td>
+<td>int64, _ := strconv.ParseInt(“1”, 10, 64)</td>
 </tr>
 
 <tr>
-<td>P</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Enter</td>
-<td>Enter <code>Edit Mode</code></td>
-</tr>
-
-<tr>
-<td>Ctrl-Enter</td>
-<td>run selected cells</td>
-</tr>
-
-<tr>
-<td>Shift-Enter</td>
-<td>run cell and select below</td>
-</tr>
-
-<tr>
-<td>Alt-Enter</td>
-<td>run cell and insert below</td>
-</tr>
-
-<tr>
-<td>Y</td>
-<td>change cell to code</td>
-</tr>
-
-<tr>
-<td>M</td>
-<td>change cell to markdown</td>
-</tr>
-
-<tr>
-<td>R</td>
-<td>change cell to raw</td>
-</tr>
-
-<tr>
-<td>1</td>
-<td>change cell to heading 1</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>change cell to heading 2</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td>change cell to heading 3</td>
-</tr>
-
-<tr>
-<td>4</td>
-<td>change cell to heading 4</td>
-</tr>
-
-<tr>
-<td>5</td>
-<td>change cell to heading 5</td>
-</tr>
-
-<tr>
-<td>6</td>
-<td>change cell to heading 6</td>
-</tr>
-
-<tr>
-<td>Shift-Space</td>
-<td>scroll notebook up</td>
-</tr>
-
-<tr>
-<td>Space</td>
-<td>scroll nobebook down</td>
-</tr>
-
-<tr>
-<td>K</td>
-<td>select cell above</td>
-</tr>
-
-<tr>
-<td>Up</td>
-<td>select cell above</td>
-</tr>
-
-<tr>
-<td>J</td>
-<td>select cell below</td>
-</tr>
-
-<tr>
-<td>Down</td>
-<td>select cell below</td>
-</tr>
-
-<tr>
-<td>Shift-K</td>
-<td>extend selected cells above</td>
-</tr>
-
-<tr>
-<td>Shift-Up</td>
-<td>extend selected cells above</td>
-</tr>
-
-<tr>
-<td>Shift-J</td>
-<td>extend selected cells below</td>
-</tr>
-
-<tr>
-<td>Shift-Down</td>
-<td>extend selected cells below</td>
-</tr>
-
-<tr>
-<td>A</td>
-<td>insert cell above</td>
-</tr>
-
-<tr>
-<td>B</td>
-<td>insert cell below</td>
-</tr>
-
-<tr>
-<td>X</td>
-<td>cut selected cells</td>
-</tr>
-
-<tr>
-<td>C</td>
-<td>copy selected cells</td>
-</tr>
-
-<tr>
-<td>V</td>
-<td>paste cells below</td>
-</tr>
-
-<tr>
-<td>Shift-V</td>
-<td>paste cells above</td>
-</tr>
-
-<tr>
-<td>Z</td>
-<td>undo cell deletion</td>
-</tr>
-
-<tr>
-<td>D, D</td>
-<td>delete selected cells</td>
-</tr>
-
-<tr>
-<td>Shift-M</td>
-<td>merge selected cells, or current cell with cell below if only one cell is selected</td>
-</tr>
-
-<tr>
-<td>Ctrl-S</td>
-<td>save and checkpoint</td>
-</tr>
-
-<tr>
-<td>S</td>
-<td>save and checkpoint</td>
-</tr>
-
-<tr>
-<td>L</td>
-<td>toggle line numbers</td>
-</tr>
-
-<tr>
-<td>Shift-L</td>
-<td>toggles line numbers in all cells, and persist the setting</td>
-</tr>
-
-<tr>
-<td>O</td>
-<td>toggle output of selected cells</td>
-</tr>
-
-<tr>
-<td>Shift-O</td>
-<td>toggle output scrolling of selected cells</td>
-</tr>
-
-<tr>
-<td>H</td>
-<td>show keyboard shorcuts</td>
-</tr>
-
-<tr>
-<td>I, I</td>
-<td>interrupt the kernel</td>
-</tr>
-
-<tr>
-<td>0, 0</td>
-<td>restart the kernel (with dialog)</td>
-</tr>
-
-<tr>
-<td>Ctrl-V</td>
-<td>dialog for paste from system clipboard</td>
-</tr>
-
-<tr>
-<td>Esc</td>
-<td>close the pager</td>
-</tr>
-
-<tr>
-<td>Q</td>
-<td>close the pager</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="shortcuts-in-edit-mode">Shortcuts in <code>Edit Mode</code></h3>
-
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Action</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>Esc</td>
-<td>enter command mode</td>
-</tr>
-
-<tr>
-<td>Ctrl-M</td>
-<td>enter command mode</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-F</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-P</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Ctrl-Enter</td>
-<td>run selected cells</td>
-</tr>
-
-<tr>
-<td>Alt-Enter</td>
-<td>run cell and insert below</td>
-</tr>
-
-<tr>
-<td>Shift-Enter</td>
-<td>run cell and select below</td>
-</tr>
-
-<tr>
-<td>Ctrl-S</td>
-<td>Save and Checkpoint</td>
-</tr>
-
-<tr>
-<td>Up</td>
-<td>move cursor up</td>
-</tr>
-
-<tr>
-<td>Down</td>
-<td>move cursor down</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-Minus</td>
-<td>split cell at cursor</td>
-</tr>
-
-<tr>
-<td>Tab</td>
-<td>code completion or indent</td>
-</tr>
-
-<tr>
-<td>Shift-Tab</td>
-<td>tooltip</td>
-</tr>
-
-<tr>
-<td>Ctrl-]</td>
-<td>indent</td>
-</tr>
-
-<tr>
-<td>Ctrl-[</td>
-<td>dedent</td>
-</tr>
-
-<tr>
-<td>Ctrl-A</td>
-<td>select all</td>
-</tr>
-
-<tr>
-<td>Ctrl-Y</td>
-<td>redo</td>
-</tr>
-
-<tr>
-<td>Ctrl-Z</td>
-<td>undo</td>
-</tr>
-
-<tr>
-<td>Ctrl-/</td>
-<td>comment</td>
-</tr>
-
-<tr>
-<td>Ctrl-D</td>
-<td>delete whole line</td>
-</tr>
-
-<tr>
-<td>Ctrl-U</td>
-<td>undo selection</td>
-</tr>
-
-<tr>
-<td>Alt-U</td>
-<td>redo selection</td>
-</tr>
-
-<tr>
-<td>Insert</td>
-<td>toggle overwrite flag</td>
-</tr>
-
-<tr>
-<td>Ctrl-Home</td>
-<td>go to cell start</td>
-</tr>
-
-<tr>
-<td>Ctrl-Up</td>
-<td>go to cell start</td>
-</tr>
-
-<tr>
-<td>Ctrl-End</td>
-<td>go to cell end</td>
-</tr>
-
-<tr>
-<td>Ctrl-Down</td>
-<td>go to cell end</td>
-</tr>
-
-<tr>
-<td>Ctrl-Left</td>
-<td>go one word left</td>
-</tr>
-
-<tr>
-<td>Ctrl-Right</td>
-<td>go one word right</td>
-</tr>
-
-<tr>
-<td>Ctrl-Backspace</td>
-<td>delete work before</td>
-</tr>
-
-<tr>
-<td>Ctrl-Delete</td>
-<td>delete work after</td>
+<td>int64</td>
+<td>string</td>
+<td>string := strconv.FormatInt(1, 64)</td>
 </tr>
 </tbody>
 </table>

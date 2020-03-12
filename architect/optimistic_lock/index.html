@@ -10,8 +10,8 @@
     
     <meta name="generator" content="Hugo 0.59.0" />
     
-    <title>Jupyter Notebook Shortcuts &middot; RayG</title>
-    <meta content="Jupyter Notebook Shortcuts - RayG" property="og:title">
+    <title>乐观锁 &middot; RayG</title>
+    <meta content="乐观锁 - RayG" property="og:title">
     <meta content=" - " property="og:description">
     <!-- CSS -->
     
@@ -118,19 +118,19 @@
 
         <div class="content container">
             <div class="post">
-  <h1>Jupyter Notebook Shortcuts</h1>
+  <h1>乐观锁</h1>
   
   <div class="col-sm-12 col-md-12">
     <span class="text-left post-date meta">
       
       
-        <i class="fas fa-calendar-alt"></i> Jun 21, 2018
+        <i class="fas fa-calendar-alt"></i> Aug 13, 2017
       
       
       
       
       <br/>
-      <i class="fas fa-clock"></i> 3 min read
+      <i class="fas fa-clock"></i> 2 min read
       </span>
   </div>
   
@@ -140,468 +140,49 @@
     <header>
         <b>Table of Content</b>
     </header>
-    <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#switch-between-modes">Switch between modes</a></li>
-<li><a href="#show-and-edit-shortcuts">Show and edit shortcuts</a></li>
-<li><a href="#default-shortcuts">Default Shortcuts</a>
-<ul>
-<li><a href="#shortcuts-in-command-mode">Shortcuts in <code>Command Mode</code></a></li>
-<li><a href="#shortcuts-in-edit-mode">Shortcuts in <code>Edit Mode</code></a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav>
+    
     <p>---</p>
 </aside>
 
 
 
   <article>
-    
+    <p>现在电商各种流行，各种抢购秒杀等等听起来高大上，背后码农泪千行啊。</p>
 
-<p>Jupyter Notebook has 2 Modes: <code>Edit Mode</code> and <code>Command Mode</code>.</p>
+<p>说到支付，必然会涉及事务。在上古的单机数据库时代，写一个事务并没有什么特别复杂的，
+数据库已经提供了各种读锁、行锁、表锁等等。而且，支付的逻辑所涉及到的各种表，
+还可能是在同一个数据库之中，主流数据库原生都能处理这些。</p>
 
-<p><em>NOTE:</em> If you are in <code>Edit Mode</code>, there is a pencil at the upper-right.</p>
+<p>然而，到了SOA甚至微服务阶段，支付所涉及到的表可能都不在同一个数据库里了，
+于是就有了分布式事务的概念。然后就有了各种二阶段提交，分布式CAP取舍，基于消息队列实现的分布式事务等等。</p>
 
-<h2 id="switch-between-modes">Switch between modes</h2>
+<p>一个事务到来，那么更新数据库的时候必然要拿锁来防止冲突。
+我们当然可以通过悲观锁来简单粗暴的处理，悲观锁顾名思义就是无论什么情况下都先拿到锁再说，
+认为任何时候的数据都是不靠谱的，够悲观的。显而易见，悲观锁对数据库的性能影响是很大的。</p>
 
-<p><code>Enter</code> to enter <code>Edit Mode</code> from <code>Command Mode</code></p>
+<p>于是，就有了乐观锁，乐观锁是一种写入更新数据库的逻辑，认为操作数据的时候，别人没有改过数据，于是便不去拿锁，很乐观。
+但是，在更新的时候，还是会判断一下数据是否有被别人更改过，一般会用<code>版本号</code>或者<code>CAS(compare-and-swap / check-and-set)</code>来实现。
+如果数据不对，那么更新就应该失败，事务回滚，咱重新来过。</p>
 
-<p><code>ESC</code> to return <code>Command Mode</code> from <code>Edit Mode</code></p>
+<p>版本号方式就是在数据中加入一个版本号来表明当前数据是哪个版本。</p>
 
-<h2 id="show-and-edit-shortcuts">Show and edit shortcuts</h2>
+<p>对需要乐观锁的数据在表中加入一个version字段，然后update的时候，在where条件后加入version=之前的版本号。
+过程如下</p>
 
-<p>Shortcuts can be show by <code>Help -&gt; Keyboard Shortcuts</code>.</p>
+<ol>
+<li>select阶段得到该条记录，并读出版本号</li>
 
-<p>And the shortcuts is also editable <code>Help -&gt; Edit Keyboard Shortcuts</code>.</p>
+<li><p>update时将该条记录的版本号对比之前select出的版本号对比，如果不一致，更新失败，affect_rows是0,否则就成功更新</p>
 
-<h2 id="default-shortcuts">Default Shortcuts</h2>
+<pre><code class="language-sql">select * from [table] where [your logic];
+update [table] set [your logic] where id = [selected id] and version = [selected version]
+</code></pre></li>
+</ol>
 
-<p>Follow are the default shortcuts of both <code>Command Mode</code> and <code>Edit Mode</code>.</p>
+<p>CAS方式则是把上述的version对应到某一个或几个具体的字段的具体的值，如果值一样，则认为数据没有更新。</p>
 
-<h3 id="shortcuts-in-command-mode">Shortcuts in <code>Command Mode</code></h3>
-
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Action</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>F</td>
-<td>find and replace</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-F</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-P</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>P</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Enter</td>
-<td>Enter <code>Edit Mode</code></td>
-</tr>
-
-<tr>
-<td>Ctrl-Enter</td>
-<td>run selected cells</td>
-</tr>
-
-<tr>
-<td>Shift-Enter</td>
-<td>run cell and select below</td>
-</tr>
-
-<tr>
-<td>Alt-Enter</td>
-<td>run cell and insert below</td>
-</tr>
-
-<tr>
-<td>Y</td>
-<td>change cell to code</td>
-</tr>
-
-<tr>
-<td>M</td>
-<td>change cell to markdown</td>
-</tr>
-
-<tr>
-<td>R</td>
-<td>change cell to raw</td>
-</tr>
-
-<tr>
-<td>1</td>
-<td>change cell to heading 1</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>change cell to heading 2</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td>change cell to heading 3</td>
-</tr>
-
-<tr>
-<td>4</td>
-<td>change cell to heading 4</td>
-</tr>
-
-<tr>
-<td>5</td>
-<td>change cell to heading 5</td>
-</tr>
-
-<tr>
-<td>6</td>
-<td>change cell to heading 6</td>
-</tr>
-
-<tr>
-<td>Shift-Space</td>
-<td>scroll notebook up</td>
-</tr>
-
-<tr>
-<td>Space</td>
-<td>scroll nobebook down</td>
-</tr>
-
-<tr>
-<td>K</td>
-<td>select cell above</td>
-</tr>
-
-<tr>
-<td>Up</td>
-<td>select cell above</td>
-</tr>
-
-<tr>
-<td>J</td>
-<td>select cell below</td>
-</tr>
-
-<tr>
-<td>Down</td>
-<td>select cell below</td>
-</tr>
-
-<tr>
-<td>Shift-K</td>
-<td>extend selected cells above</td>
-</tr>
-
-<tr>
-<td>Shift-Up</td>
-<td>extend selected cells above</td>
-</tr>
-
-<tr>
-<td>Shift-J</td>
-<td>extend selected cells below</td>
-</tr>
-
-<tr>
-<td>Shift-Down</td>
-<td>extend selected cells below</td>
-</tr>
-
-<tr>
-<td>A</td>
-<td>insert cell above</td>
-</tr>
-
-<tr>
-<td>B</td>
-<td>insert cell below</td>
-</tr>
-
-<tr>
-<td>X</td>
-<td>cut selected cells</td>
-</tr>
-
-<tr>
-<td>C</td>
-<td>copy selected cells</td>
-</tr>
-
-<tr>
-<td>V</td>
-<td>paste cells below</td>
-</tr>
-
-<tr>
-<td>Shift-V</td>
-<td>paste cells above</td>
-</tr>
-
-<tr>
-<td>Z</td>
-<td>undo cell deletion</td>
-</tr>
-
-<tr>
-<td>D, D</td>
-<td>delete selected cells</td>
-</tr>
-
-<tr>
-<td>Shift-M</td>
-<td>merge selected cells, or current cell with cell below if only one cell is selected</td>
-</tr>
-
-<tr>
-<td>Ctrl-S</td>
-<td>save and checkpoint</td>
-</tr>
-
-<tr>
-<td>S</td>
-<td>save and checkpoint</td>
-</tr>
-
-<tr>
-<td>L</td>
-<td>toggle line numbers</td>
-</tr>
-
-<tr>
-<td>Shift-L</td>
-<td>toggles line numbers in all cells, and persist the setting</td>
-</tr>
-
-<tr>
-<td>O</td>
-<td>toggle output of selected cells</td>
-</tr>
-
-<tr>
-<td>Shift-O</td>
-<td>toggle output scrolling of selected cells</td>
-</tr>
-
-<tr>
-<td>H</td>
-<td>show keyboard shorcuts</td>
-</tr>
-
-<tr>
-<td>I, I</td>
-<td>interrupt the kernel</td>
-</tr>
-
-<tr>
-<td>0, 0</td>
-<td>restart the kernel (with dialog)</td>
-</tr>
-
-<tr>
-<td>Ctrl-V</td>
-<td>dialog for paste from system clipboard</td>
-</tr>
-
-<tr>
-<td>Esc</td>
-<td>close the pager</td>
-</tr>
-
-<tr>
-<td>Q</td>
-<td>close the pager</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="shortcuts-in-edit-mode">Shortcuts in <code>Edit Mode</code></h3>
-
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Action</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>Esc</td>
-<td>enter command mode</td>
-</tr>
-
-<tr>
-<td>Ctrl-M</td>
-<td>enter command mode</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-F</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-P</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Ctrl-Enter</td>
-<td>run selected cells</td>
-</tr>
-
-<tr>
-<td>Alt-Enter</td>
-<td>run cell and insert below</td>
-</tr>
-
-<tr>
-<td>Shift-Enter</td>
-<td>run cell and select below</td>
-</tr>
-
-<tr>
-<td>Ctrl-S</td>
-<td>Save and Checkpoint</td>
-</tr>
-
-<tr>
-<td>Up</td>
-<td>move cursor up</td>
-</tr>
-
-<tr>
-<td>Down</td>
-<td>move cursor down</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-Minus</td>
-<td>split cell at cursor</td>
-</tr>
-
-<tr>
-<td>Tab</td>
-<td>code completion or indent</td>
-</tr>
-
-<tr>
-<td>Shift-Tab</td>
-<td>tooltip</td>
-</tr>
-
-<tr>
-<td>Ctrl-]</td>
-<td>indent</td>
-</tr>
-
-<tr>
-<td>Ctrl-[</td>
-<td>dedent</td>
-</tr>
-
-<tr>
-<td>Ctrl-A</td>
-<td>select all</td>
-</tr>
-
-<tr>
-<td>Ctrl-Y</td>
-<td>redo</td>
-</tr>
-
-<tr>
-<td>Ctrl-Z</td>
-<td>undo</td>
-</tr>
-
-<tr>
-<td>Ctrl-/</td>
-<td>comment</td>
-</tr>
-
-<tr>
-<td>Ctrl-D</td>
-<td>delete whole line</td>
-</tr>
-
-<tr>
-<td>Ctrl-U</td>
-<td>undo selection</td>
-</tr>
-
-<tr>
-<td>Alt-U</td>
-<td>redo selection</td>
-</tr>
-
-<tr>
-<td>Insert</td>
-<td>toggle overwrite flag</td>
-</tr>
-
-<tr>
-<td>Ctrl-Home</td>
-<td>go to cell start</td>
-</tr>
-
-<tr>
-<td>Ctrl-Up</td>
-<td>go to cell start</td>
-</tr>
-
-<tr>
-<td>Ctrl-End</td>
-<td>go to cell end</td>
-</tr>
-
-<tr>
-<td>Ctrl-Down</td>
-<td>go to cell end</td>
-</tr>
-
-<tr>
-<td>Ctrl-Left</td>
-<td>go one word left</td>
-</tr>
-
-<tr>
-<td>Ctrl-Right</td>
-<td>go one word right</td>
-</tr>
-
-<tr>
-<td>Ctrl-Backspace</td>
-<td>delete work before</td>
-</tr>
-
-<tr>
-<td>Ctrl-Delete</td>
-<td>delete work after</td>
-</tr>
-</tbody>
-</table>
+<p>批量更新如果用版本号的话，就没有那么好写sql语句了。然而如果业务中涉及到某一个或几个字段的批量跟新，
+比如status从standby到ready，那么此时用CAS就可以方便的更新一批数据了。</p>
 
   </article>
     

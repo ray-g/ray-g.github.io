@@ -10,8 +10,8 @@
     
     <meta name="generator" content="Hugo 0.59.0" />
     
-    <title>Jupyter Notebook Shortcuts &middot; RayG</title>
-    <meta content="Jupyter Notebook Shortcuts - RayG" property="og:title">
+    <title>Golang TryLock &middot; RayG</title>
+    <meta content="Golang TryLock - RayG" property="og:title">
     <meta content=" - " property="og:description">
     <!-- CSS -->
     
@@ -118,19 +118,19 @@
 
         <div class="content container">
             <div class="post">
-  <h1>Jupyter Notebook Shortcuts</h1>
+  <h1>Golang TryLock</h1>
   
   <div class="col-sm-12 col-md-12">
     <span class="text-left post-date meta">
       
       
-        <i class="fas fa-calendar-alt"></i> Jun 21, 2018
+        <i class="fas fa-calendar-alt"></i> Jan 22, 2018
       
       
       
       
       <br/>
-      <i class="fas fa-clock"></i> 3 min read
+      <i class="fas fa-clock"></i> 2 min read
       </span>
   </div>
   
@@ -144,13 +144,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#switch-between-modes">Switch between modes</a></li>
-<li><a href="#show-and-edit-shortcuts">Show and edit shortcuts</a></li>
-<li><a href="#default-shortcuts">Default Shortcuts</a>
-<ul>
-<li><a href="#shortcuts-in-command-mode">Shortcuts in <code>Command Mode</code></a></li>
-<li><a href="#shortcuts-in-edit-mode">Shortcuts in <code>Edit Mode</code></a></li>
-</ul></li>
+<li><a href="#unsafe-直接操作-mutex">Unsafe 直接操作 Mutex</a></li>
+<li><a href="#无休眠版-spinlock">无休眠版 SpinLock</a></li>
+<li><a href="#使用-channel-做锁">使用 channel 做锁</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -162,446 +158,131 @@
   <article>
     
 
-<p>Jupyter Notebook has 2 Modes: <code>Edit Mode</code> and <code>Command Mode</code>.</p>
+<p>Golang中的锁有<code>sync</code>包中的<code>Mutex</code>和<code>RWMutex</code>。然而Go中的锁实现的比较简单，在没有获取到锁的时候，会被阻塞住，一直等下去。
+这样的锁的设计，有时候不容易满足现实中的需求，比如一个事务需要更新两个资源A和B，
+我们在锁了A后需要锁B，然而恰好这个时候有人锁了B但是在等着锁A，这个时候Go的锁机制就会出现死锁了。
+如果这个时候，我们不是用这种阻塞的锁，而是用一个名不付实的<code>TryLock</code>就可以解决这个问题了。</p>
 
-<p><em>NOTE:</em> If you are in <code>Edit Mode</code>, there is a pencil at the upper-right.</p>
+<p>很多年以前，有人就给Go提了Issue，要求添加TryLock<a href="https://github.com/golang/go/issues/6123">sync: mutex.TryLock</a>。
+然而不幸的是这个请求一直没有被纳入官方库，到最后在官方清理的时候还给关掉了，意味着官方库不会添加这个需求了。
+这个Issue中，Rob Pike还顺便吐槽了一下TryLock是如何的名不付实，返回true的时候明明已经真的锁了，名字却叫做尝试。</p>
 
-<h2 id="switch-between-modes">Switch between modes</h2>
-
-<p><code>Enter</code> to enter <code>Edit Mode</code> from <code>Command Mode</code></p>
+<h2 id="unsafe-直接操作-mutex">Unsafe 直接操作 Mutex</h2>
 
-<p><code>ESC</code> to return <code>Command Mode</code> from <code>Edit Mode</code></p>
-
-<h2 id="show-and-edit-shortcuts">Show and edit shortcuts</h2>
+<p>Mutex的结构如下：</p>
 
-<p>Shortcuts can be show by <code>Help -&gt; Keyboard Shortcuts</code>.</p>
-
-<p>And the shortcuts is also editable <code>Help -&gt; Edit Keyboard Shortcuts</code>.</p>
-
-<h2 id="default-shortcuts">Default Shortcuts</h2>
-
-<p>Follow are the default shortcuts of both <code>Command Mode</code> and <code>Edit Mode</code>.</p>
-
-<h3 id="shortcuts-in-command-mode">Shortcuts in <code>Command Mode</code></h3>
-
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Action</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>F</td>
-<td>find and replace</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-F</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-P</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>P</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Enter</td>
-<td>Enter <code>Edit Mode</code></td>
-</tr>
-
-<tr>
-<td>Ctrl-Enter</td>
-<td>run selected cells</td>
-</tr>
-
-<tr>
-<td>Shift-Enter</td>
-<td>run cell and select below</td>
-</tr>
-
-<tr>
-<td>Alt-Enter</td>
-<td>run cell and insert below</td>
-</tr>
-
-<tr>
-<td>Y</td>
-<td>change cell to code</td>
-</tr>
-
-<tr>
-<td>M</td>
-<td>change cell to markdown</td>
-</tr>
-
-<tr>
-<td>R</td>
-<td>change cell to raw</td>
-</tr>
-
-<tr>
-<td>1</td>
-<td>change cell to heading 1</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>change cell to heading 2</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td>change cell to heading 3</td>
-</tr>
-
-<tr>
-<td>4</td>
-<td>change cell to heading 4</td>
-</tr>
-
-<tr>
-<td>5</td>
-<td>change cell to heading 5</td>
-</tr>
-
-<tr>
-<td>6</td>
-<td>change cell to heading 6</td>
-</tr>
-
-<tr>
-<td>Shift-Space</td>
-<td>scroll notebook up</td>
-</tr>
-
-<tr>
-<td>Space</td>
-<td>scroll nobebook down</td>
-</tr>
-
-<tr>
-<td>K</td>
-<td>select cell above</td>
-</tr>
-
-<tr>
-<td>Up</td>
-<td>select cell above</td>
-</tr>
-
-<tr>
-<td>J</td>
-<td>select cell below</td>
-</tr>
-
-<tr>
-<td>Down</td>
-<td>select cell below</td>
-</tr>
-
-<tr>
-<td>Shift-K</td>
-<td>extend selected cells above</td>
-</tr>
-
-<tr>
-<td>Shift-Up</td>
-<td>extend selected cells above</td>
-</tr>
-
-<tr>
-<td>Shift-J</td>
-<td>extend selected cells below</td>
-</tr>
-
-<tr>
-<td>Shift-Down</td>
-<td>extend selected cells below</td>
-</tr>
-
-<tr>
-<td>A</td>
-<td>insert cell above</td>
-</tr>
-
-<tr>
-<td>B</td>
-<td>insert cell below</td>
-</tr>
-
-<tr>
-<td>X</td>
-<td>cut selected cells</td>
-</tr>
-
-<tr>
-<td>C</td>
-<td>copy selected cells</td>
-</tr>
-
-<tr>
-<td>V</td>
-<td>paste cells below</td>
-</tr>
-
-<tr>
-<td>Shift-V</td>
-<td>paste cells above</td>
-</tr>
-
-<tr>
-<td>Z</td>
-<td>undo cell deletion</td>
-</tr>
-
-<tr>
-<td>D, D</td>
-<td>delete selected cells</td>
-</tr>
-
-<tr>
-<td>Shift-M</td>
-<td>merge selected cells, or current cell with cell below if only one cell is selected</td>
-</tr>
-
-<tr>
-<td>Ctrl-S</td>
-<td>save and checkpoint</td>
-</tr>
-
-<tr>
-<td>S</td>
-<td>save and checkpoint</td>
-</tr>
-
-<tr>
-<td>L</td>
-<td>toggle line numbers</td>
-</tr>
-
-<tr>
-<td>Shift-L</td>
-<td>toggles line numbers in all cells, and persist the setting</td>
-</tr>
-
-<tr>
-<td>O</td>
-<td>toggle output of selected cells</td>
-</tr>
-
-<tr>
-<td>Shift-O</td>
-<td>toggle output scrolling of selected cells</td>
-</tr>
-
-<tr>
-<td>H</td>
-<td>show keyboard shorcuts</td>
-</tr>
-
-<tr>
-<td>I, I</td>
-<td>interrupt the kernel</td>
-</tr>
-
-<tr>
-<td>0, 0</td>
-<td>restart the kernel (with dialog)</td>
-</tr>
-
-<tr>
-<td>Ctrl-V</td>
-<td>dialog for paste from system clipboard</td>
-</tr>
-
-<tr>
-<td>Esc</td>
-<td>close the pager</td>
-</tr>
-
-<tr>
-<td>Q</td>
-<td>close the pager</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="shortcuts-in-edit-mode">Shortcuts in <code>Edit Mode</code></h3>
-
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Action</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>Esc</td>
-<td>enter command mode</td>
-</tr>
-
-<tr>
-<td>Ctrl-M</td>
-<td>enter command mode</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-F</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-P</td>
-<td>open the command palette</td>
-</tr>
-
-<tr>
-<td>Ctrl-Enter</td>
-<td>run selected cells</td>
-</tr>
-
-<tr>
-<td>Alt-Enter</td>
-<td>run cell and insert below</td>
-</tr>
-
-<tr>
-<td>Shift-Enter</td>
-<td>run cell and select below</td>
-</tr>
-
-<tr>
-<td>Ctrl-S</td>
-<td>Save and Checkpoint</td>
-</tr>
-
-<tr>
-<td>Up</td>
-<td>move cursor up</td>
-</tr>
-
-<tr>
-<td>Down</td>
-<td>move cursor down</td>
-</tr>
-
-<tr>
-<td>Ctrl-Shift-Minus</td>
-<td>split cell at cursor</td>
-</tr>
-
-<tr>
-<td>Tab</td>
-<td>code completion or indent</td>
-</tr>
-
-<tr>
-<td>Shift-Tab</td>
-<td>tooltip</td>
-</tr>
-
-<tr>
-<td>Ctrl-]</td>
-<td>indent</td>
-</tr>
-
-<tr>
-<td>Ctrl-[</td>
-<td>dedent</td>
-</tr>
-
-<tr>
-<td>Ctrl-A</td>
-<td>select all</td>
-</tr>
-
-<tr>
-<td>Ctrl-Y</td>
-<td>redo</td>
-</tr>
-
-<tr>
-<td>Ctrl-Z</td>
-<td>undo</td>
-</tr>
-
-<tr>
-<td>Ctrl-/</td>
-<td>comment</td>
-</tr>
-
-<tr>
-<td>Ctrl-D</td>
-<td>delete whole line</td>
-</tr>
-
-<tr>
-<td>Ctrl-U</td>
-<td>undo selection</td>
-</tr>
-
-<tr>
-<td>Alt-U</td>
-<td>redo selection</td>
-</tr>
-
-<tr>
-<td>Insert</td>
-<td>toggle overwrite flag</td>
-</tr>
-
-<tr>
-<td>Ctrl-Home</td>
-<td>go to cell start</td>
-</tr>
-
-<tr>
-<td>Ctrl-Up</td>
-<td>go to cell start</td>
-</tr>
-
-<tr>
-<td>Ctrl-End</td>
-<td>go to cell end</td>
-</tr>
-
-<tr>
-<td>Ctrl-Down</td>
-<td>go to cell end</td>
-</tr>
-
-<tr>
-<td>Ctrl-Left</td>
-<td>go one word left</td>
-</tr>
-
-<tr>
-<td>Ctrl-Right</td>
-<td>go one word right</td>
-</tr>
-
-<tr>
-<td>Ctrl-Backspace</td>
-<td>delete work before</td>
-</tr>
-
-<tr>
-<td>Ctrl-Delete</td>
-<td>delete work after</td>
-</tr>
-</tbody>
-</table>
+<pre><code class="language-golang">// A Mutex is a mutual exclusion lock.
+// The zero value for a Mutex is an unlocked mutex.
+//
+// A Mutex must not be copied after first use.
+type Mutex struct {
+    state int32
+    sema  uint32
+}
+
+mutexLocked = 1 &lt;&lt; iota // mutex is locked
+</code></pre>
+
+<p>Mutex使用其中的<code>state</code>字段来标记锁是否被占用，0是unlock， 1是locked。
+所以，我们可以取巧的来直接操作<code>state</code>，反正官方实现的quick path也是这样的。</p>
+
+<pre><code class="language-golang">const mutexLocked = 1 &lt;&lt; iota  // mutex is locked
+
+type Mutex struct {
+    sync.Mutex
+}
+
+func (m *Mutex) TryLock() bool {
+    return atomic.CompareAndSwapInt32((*int32)(unsafe.Pointer(&amp;m.Mutex)), 0, mutexLocked)
+}
+</code></pre>
+
+<h2 id="无休眠版-spinlock">无休眠版 SpinLock</h2>
+
+<p>利用CAS来尝试获取锁，还可以创建一个自己的spinlock</p>
+
+<pre><code class="language-golang">type SpinLock struct {
+    state uint32
+}
+
+func (sl *SpinLock) Lock() {
+    for !sl.TryLock() {
+        runtime.Gosched()
+    }
+}
+
+func (sl *SpinLock) Unlock() {
+    atomic.StoreUint32(&amp;sl.state, 0)
+}
+
+func (sl *SpinLock) TryLock() bool {
+    return atomic.CompareAndSwapUint32(&amp;sl.state, 0, mutexLocked)
+}
+</code></pre>
+
+<p>看起来，就是一个标准库的Mutex的精简版，只有quick path，在quick path走不通的时候，没有slow path中的休眠唤醒等。
+这样的SpinLock在并发量很大的时候，肯定是CPU占用很高的，因为如果锁被别人占用很长的时间，这个Spin的循环会一直跑。
+获取锁的速度可能很快，但是CPU占用率会比较高。</p>
+
+<p>这个版本还可以优化到不要结构</p>
+
+<pre><code class="language-golang">type spinLock uint32
+
+func (sl *spinLock) Lock() {
+    for !atomic.CompareAndSwapUint32((*uint32)(sl), 0, mutexLocked) {
+        runtime.Gosched()
+    }
+}
+
+func (sl *spinLock) Unlock() {
+    atomic.StoreUint32((*uint32)(sl), 0)
+}
+
+func (sl *spinLock) TryLock() bool {
+    return atomic.CompareAndSwapUint32((*uint32)(sl), 0, mutexLocked)
+}
+
+func SpinLock() sync.Locker {
+    var lock spinLock
+    return &amp;lock
+}
+</code></pre>
+
+<h2 id="使用-channel-做锁">使用 channel 做锁</h2>
+
+<p>使用无buffer的channel也可以做把锁，但是需要注意的是，这个Unlock如果连续两次调用的话，会把自己锁住。</p>
+
+<pre><code class="language-golang">type ChanMutex chan struct{}
+
+func (m *ChanMutex) Lock() {
+    ch := (chan struct{})(*m)
+    ch &lt;- struct{}{}
+}
+
+func (m *ChanMutex) Unlock() {
+    ch := (chan struct{})(*m)
+    select {
+    case &lt;-ch:
+    default:
+        panic(&quot;unlock of unlocked mutex&quot;)
+    }
+}
+
+func (m *ChanMutex) TryLock() bool {
+    ch := (chan struct{})(*m)
+    select {
+    case ch &lt;- struct{}{}:
+        return true
+    default:
+    }
+    return false
+}
+
+func NewLocker() *ChanMutex {
+    l := make(ChanMutex, 1)
+    return &amp;l
+}
+</code></pre>
 
   </article>
     

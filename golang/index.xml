@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Golangs on RayG</title>
@@ -6,10 +6,19 @@
     <description>Recent content in Golangs on RayG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 Jun 2018 00:26:35 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 05 Dec 2019 20:17:22 +0800</lastBuildDate>
     
 	<atom:link href="https://ray-g.github.io/golang/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang 1.13 defer 变化</title>
+      <link>https://ray-g.github.io/golang/golang_1_13_defer/</link>
+      <pubDate>Thu, 05 Dec 2019 20:17:22 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/golang/golang_1_13_defer/</guid>
+      <description>Golang的1.13发布了，在Release Note的Runtime section上提到了defer在多数情况下可以提升30%的性能。 那么</description>
+    </item>
     
     <item>
       <title>初学Golang易犯的错误</title>
@@ -18,6 +27,51 @@
       
       <guid>https://ray-g.github.io/golang/common-mistakes-for-newbies/</guid>
       <description>Golang是Google推出的面向软件工程的，拥有GC的，高并发的语言。 初学Go的时候很可能犯一些错误，犯错误并不怕，可怕的是一直犯同一个</description>
+    </item>
+    
+    <item>
+      <title>Golang TryLock</title>
+      <link>https://ray-g.github.io/golang/golang_trylock/</link>
+      <pubDate>Mon, 22 Jan 2018 12:15:33 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/golang/golang_trylock/</guid>
+      <description>Golang中的锁有sync包中的Mutex和RWMutex。然而Go中的锁实现的比较简单，在没有获取到锁的时候，会被阻塞住，一直等下去。 这</description>
+    </item>
+    
+    <item>
+      <title>Golang context</title>
+      <link>https://ray-g.github.io/golang/golang_context/</link>
+      <pubDate>Wed, 15 Nov 2017 19:53:24 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/golang/golang_context/</guid>
+      <description>Context背景 随着微服务的发展，大家在写服务的各种响应函数的时候，一定都是将Context作为第一个参数， 很多情况下是为了进行全链路追踪</description>
+    </item>
+    
+    <item>
+      <title>Golang defer</title>
+      <link>https://ray-g.github.io/golang/golang_defer/</link>
+      <pubDate>Mon, 06 Nov 2017 21:27:32 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/golang/golang_defer/</guid>
+      <description>作用 延迟调用 被defer的函数调用会延迟到当前函数结束的时候再进行调用，defer调用完毕后，函数的返回值才会被返回给上一级调用者。 比如这样</description>
+    </item>
+    
+    <item>
+      <title>Golang slice</title>
+      <link>https://ray-g.github.io/golang/golang_slice/</link>
+      <pubDate>Tue, 24 Oct 2017 14:54:12 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/golang/golang_slice/</guid>
+      <description>数组与切片 Golang中语言自带的线性数据结构有数组(Array)和切片(Slice)。 其中数组是有固定长度的由特定类型的元素组成的序列。 因</description>
+    </item>
+    
+    <item>
+      <title>Golang string</title>
+      <link>https://ray-g.github.io/golang/golang_string/</link>
+      <pubDate>Fri, 13 Oct 2017 11:12:33 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/golang/golang_string/</guid>
+      <description>字符串的本质 Golang中的string，实际是一个不可变的字节序列，每个字节都是UTF-8编码的文本。 虽然每一个字符串都有长度，但是这个长</description>
     </item>
     
   </channel>

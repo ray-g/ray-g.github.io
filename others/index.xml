@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Others on RayG</title>
@@ -47,6 +47,15 @@ Setting up Hugo site Install Hugo First we should have a Hugo installed, Install
 After Hugo installed, try verify it.
 $ hugo version Hugo Static Site Generator v0.41 linux/amd64 BuildDate: 2018-05-25T16:57:20Z  Create a New Site Hugo can generate layout of a new site very easy:
 $ hugo new site hugo-blog Congratulations!</description>
+    </item>
+    
+    <item>
+      <title>Development Snippts</title>
+      <link>https://ray-g.github.io/others/develop_sniipts/</link>
+      <pubDate>Thu, 02 Mar 2017 23:21:36 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/others/develop_sniipts/</guid>
+      <description>Patch File Build Patch Linux: diff -Naur /path/to/original /path/to/modified &amp;gt; aaa.patch，这样就可以生成名字为aaa.patch的文件了 Windoes: 可以通过版本工具来创建，比如TortoiseSVN之</description>
     </item>
     
   </channel>

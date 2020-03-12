@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     
     
-    <meta name="generator" content="Hugo 0.41" />
+    <meta name="generator" content="Hugo 0.59.0" />
     
     <title>机器真的可以学习吗？ &middot; RayG</title>
     <meta content="机器真的可以学习吗？ - RayG" property="og:title">
@@ -53,13 +53,22 @@
 		
 		
 				<li>
+					<a href="/architect/"> <span>Architect</span></a>
+				</li>
+				<li>
 					<a href="/golang/"> <span>Golang</span></a>
 				</li>
 				<li>
 					<a href="/machinelearning/"> <span>Machine Learning</span></a>
 				</li>
 				<li>
+					<a href="/cloud/"> <span>Cloud</span></a>
+				</li>
+				<li>
 					<a href="/docker/"> <span>Docker</span></a>
+				</li>
+				<li>
+					<a href="/database/"> <span>Database</span></a>
 				</li>
 				<li>
 					<a href="/others/"> <span>Others</span></a>
@@ -99,7 +108,7 @@
 </section>
 
     </p>
-    <p class="copyright">&copy; 2018 RayG.
+    <p class="copyright">&copy; 2020 RayG.
       <a href="https://creativecommons.org/licenses/by/4.0">Some Rights Reserved</a>.<br/>Built with <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/htr3n/hyde-hyde">hyde-hyde</a>.
     </p>
   </div>
@@ -125,7 +134,20 @@
       </span>
   </div>
   
-  <p>在讨论机器是否可以学习之前，我们先来看看下面这个问题</p>
+
+  
+<aside>
+    <header>
+        <b>Table of Content</b>
+    </header>
+    
+    <p>---</p>
+</aside>
+
+
+
+  <article>
+    <p>在讨论机器是否可以学习之前，我们先来看看下面这个问题</p>
 
 <h2 id="什么是学习">什么是学习？</h2>
 
@@ -300,16 +322,45 @@
 <li>存在<code>数据</code>可以用来学习，否则巧妇难为无米之炊</li>
 </ol>
 
+  </article>
     
     
 </div>
 
             <div class="footer">
-                <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+                <script src="https://unpkg.com/mermaid@8.4.8/dist/mermaid.min.js?1583990982"></script>
+<script>
+    mermaid.initialize({
+        theme: 'default',  
+        startOnLoad: true
+    });
+    (function() {
+        var codelist = document.querySelectorAll('code.language-mermaid');
+        if (codelist && 'length' in codelist && codelist.length > 0) {
+            for (var i = 0; i < codelist.length; i++) {
+            var div = document.createElement('div');
+            div.className = 'mermaid';
+            div.setAttribute('align', 'center');
+            div.innerHTML = codelist[i].innerHTML.replace(/&amp;/g, '&');
+            codelist[i].replaceWith(div);
+        }
+    }
+    })();
+</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/toml.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/java.min.js"></script>
 
 <script type="text/javascript">
     hljs.configure({languages: []});
@@ -320,18 +371,29 @@
 <div id="graphcomment"></div>
 <script type="text/javascript">
   window.graphcomment_id = 'ray-g-github-io';
-   
   (function() {
+
+    
+    
+    
+    if (location.hostname === "localhost" ||
+       	location.hostname === "127.0.0.1" ||
+       	location.hostname === "") {
+        return;
+		}
+
+     
     var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
     gc.src = 'https://graphcomment.com/js/integration.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
   })();
 </script>
+
             </div>
         </div>
         
         
-<script>
+<script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
@@ -340,7 +402,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
     </body>
 </html>

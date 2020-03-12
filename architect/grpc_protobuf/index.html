@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en-us" class="wf-firasans-n4-active wf-active">
+	<head>
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Enable responsiveness on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    
+    
+    <meta name="generator" content="Hugo 0.59.0" />
+    
+    <title>gRPC &middot; RayG</title>
+    <meta content="gRPC - RayG" property="og:title">
+    <meta content=" - " property="og:description">
+    <!-- CSS -->
+    
+    <link rel="stylesheet" href="https://ray-g.github.io/css/print.css" media="print">
+    <link rel="stylesheet" href="https://ray-g.github.io/css/poole.css">
+    <link rel="stylesheet" href="https://ray-g.github.io/css/hyde.css">
+    <!-- Font-Awesome -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+    <!-- highlight.js-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+    <!-- Customised CSS -->
+    <link rel="stylesheet" href="https://ray-g.github.io/css/custom.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+	</head>
+    <body class="theme-base-0d ">
+        <div class="sidebar">
+  <div class="container text-center ">
+    <div class="sidebar-about text-center">
+      <a href="https://ray-g.github.io/"><h1 class="brand">RayG</h1></a>
+       <img src="/img/rayg.png" alt="Author Image" class="img-circle headshot center"> 
+      <p class="lead">
+          Tech Notes 
+      </p>
+    </div>
+    
+<div>
+	<ul class="sidebar-nav">
+		
+		
+				<li>
+					<a href="/architect/"> <span>Architect</span></a>
+				</li>
+				<li>
+					<a href="/golang/"> <span>Golang</span></a>
+				</li>
+				<li>
+					<a href="/machinelearning/"> <span>Machine Learning</span></a>
+				</li>
+				<li>
+					<a href="/cloud/"> <span>Cloud</span></a>
+				</li>
+				<li>
+					<a href="/docker/"> <span>Docker</span></a>
+				</li>
+				<li>
+					<a href="/database/"> <span>Database</span></a>
+				</li>
+				<li>
+					<a href="/others/"> <span>Others</span></a>
+				</li>
+				<li>
+					<a href="https://github.com/ray-g"> <span>Codes</span></a>
+				</li>
+				<li>
+					<a href="/about/"> <span>About</span></a>
+				</li>
+		</li>
+	</ul>
+</div>
+
+    <p>
+      <section class="row text-center">
+	
+	
+	
+	&nbsp;<a href="https://github.com/ray-g"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	&nbsp;<a href="https://linkedin.com/in/ray-guo-15145024"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	&nbsp;<a href="https://stackoverflow.com/users/7188458/ray-g"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	&nbsp;<a href="mailto:ray_g@live.com"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+</section>
+
+    </p>
+    <p class="copyright">&copy; 2020 RayG.
+      <a href="https://creativecommons.org/licenses/by/4.0">Some Rights Reserved</a>.<br/>Built with <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/htr3n/hyde-hyde">hyde-hyde</a>.
+    </p>
+  </div>
+  <div>
+  </div>
+</div>
+
+        <div class="content container">
+            <div class="post">
+  <h1>gRPC</h1>
+  
+  <div class="col-sm-12 col-md-12">
+    <span class="text-left post-date meta">
+      
+      
+        <i class="fas fa-calendar-alt"></i> Aug 23, 2019
+      
+      
+      
+      
+      <br/>
+      <i class="fas fa-clock"></i> 5 min read
+      </span>
+  </div>
+  
+
+  
+<aside>
+    <header>
+        <b>Table of Content</b>
+    </header>
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#grpc是什么">gRPC是什么</a>
+<ul>
+<li><a href="#rpc是什么">RPC是什么</a></li>
+<li><a href="#rpc框架是什么">RPC框架是什么</a></li>
+<li><a href="#有哪些rpc框架">有哪些RPC框架</a></li>
+</ul></li>
+<li><a href="#protobuf">Protobuf</a>
+<ul>
+<li><a href="#为什么不用xml或者json">为什么不用XML或者JSON</a></li>
+<li><a href="#举例">举例</a></li>
+<li><a href="#数据类型">数据类型</a></li>
+</ul></li>
+<li><a href="#grpc特点">gRPC特点</a></li>
+<li><a href="#grpc支持的语言">gRPC支持的语言</a></li>
+</ul></li>
+</ul>
+</nav>
+    <p>---</p>
+</aside>
+
+
+
+  <article>
+    
+
+<h2 id="grpc是什么">gRPC是什么</h2>
+
+<p>gRPC是Google开源的基于Protobuf的RPC框架。使用了高性能的Protobuf和HTTP/2。</p>
+
+<p>官方定义<code>gRPC</code>是一种现代的、开源的、高性能的跨平台的RPC框架。
+它可以高效的用做服务之间的互联互通，可以在一个数据中心或者跨数据中心的来处理，并且可以以插件形式来支持负载均衡、跟踪、健康检查以及认证等。
+另外，他还适用于最后一公里的解决方案，用在分布式计算连接设备，移动端程序和浏览器等连接后端服务等。</p>
+
+<p>gRPC is a modern open source high performance RPC framework that can run in any environment. It can efficiently connect services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication. It is also applicable in last mile of distributed computing to connect devices, mobile applications and browsers to backend services.</p>
+
+<h3 id="rpc是什么">RPC是什么</h3>
+
+<p>RPC是Remote Procedure Call，指的是远程过程调用，允许运行在一台计算机上的程序，像调用本地接口一样，来调用处于另外一台计算机上的程序的接口。
+既然是远程，那么一般都不在本地（虽然也可以是在本地），所以调用过程必然包含数据的编码和传输。</p>
+
+<h3 id="rpc框架是什么">RPC框架是什么</h3>
+
+<p>RPC理解了，那么RPC框架呢？如果只能完成RPC调用，那仅仅能算一个RPC库。
+既然作为框架，那么得解决一系列的问题，作为一个完整的RPC框架，
+我认为，至少应该包含服务注册/发现，负载均衡，服务治理等功能，且可以方便的接入流量监控系统。
+当然，有一些比较简单的RPC框架，通过组合多个组件，也是能完成这些功能的。</p>
+
+<h3 id="有哪些rpc框架">有哪些RPC框架</h3>
+
+<p>目前比较主流的RPC框架除了<a href="https://grpc.io/">gRPC</a>之外，还有<a href="https://github.com/apache/thrift">Thrift</a>，
+<a href="https://github.com/smallnest/rpcx">Rpcx</a>，<a href="https://github.com/apache/incubator-dubbo">Dubbo</a>，
+和<a href="https://github.com/weibocom/motan">Motan</a>。</p>
+
+<p>Thrift是Apache的一个跨语言的高性能的服务框架，得到了比较广泛的应用。
+Facebook的大部分服务都是用Thrift在通信，并在其上发展出了<a href="https://github.com/facebook/fbthrift">FBThrift</a>。</p>
+
+<p>Dubbo是Alibaba开源的一个Java高性能优秀的服务框架，使得应用可通过高性能的RPC实现服务的输出和输入功能，可以和Spring框架无缝集成。
+不过，略有遗憾的是，据说在淘宝内部，dubbo由于跟淘宝另一个类似的框架HSF（非开源）有竞争关系，
+导致dubbo团队已经解散（参见<a href="http://www.oschina.net/news/55059/druid-1-0-9">http://www.oschina.net/news/55059/druid-1-0-9</a> 中的评论），
+反到是当当网的扩展版本仍在持续发展，墙内开花墙外香。其它的一些知名电商如当当、京东、国美维护了自己的分支或者在dubbo的基础开发，
+但是官方的库缺乏维护，相关的依赖类比如Spring，Netty还是很老的版本(Spring 3.2.16.RELEASE, netty 3.2.5.Final),
+倒是有些网友写了升级Spring和Netty的插件。</p>
+
+<p>Motan是新浪微博开源的一个Java框架。它诞生的比较晚，起于2013年，2016年5月开源。Motan在微博平台中已经广泛应用，每天为数百个服务完成近千亿次的调用。</p>
+
+<p>Rpcx是Go语言生态圈的Dubbo，比Dubbo更轻量，实现了Dubbo的许多特性，借助于Go语言优秀的并发特性和简洁语法，可以使用较少的代码实现分布式的RPC服务。</p>
+
+<p>gRPC是Google开发的高性能、通用的开源RPC框架，其由Google主要面向移动应用开发并基于HTTP/2协议标准而设计，
+基于ProtoBuf(Protocol Buffers)序列化协议开发，且支持众多开发语言。本身它不是分布式的，所以要实现上面的框架的功能需要进一步的开发。</p>
+
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th>开发语言</th>
+<th>多IDL</th>
+<th>分布式(服务治理)</th>
+<th>多序列化框架</th>
+<th>多注册中心</th>
+<th>服务管理</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>gRPC</td>
+<td>跨语言</td>
+<td>x(只支持protobuf)</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+
+<tr>
+<td>Thrift</td>
+<td>跨语言</td>
+<td>x(只支持thrift格式)</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+
+<tr>
+<td>Dubbo</td>
+<td>Java</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+
+<tr>
+<td>motan</td>
+<td>Java</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+
+<tr>
+<td>rpcx</td>
+<td>Golang</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="protobuf">Protobuf</h2>
+
+<p>gRPC是基于Protobuf的，那么Protobuf是什么呢？Protobuf是Protocol Buffers的缩写，
+是一种与语言以及平台无关的可扩展的序列化结构化的数据的方法，通常用于通信协议或者数据存储等等。
+与传统的序列化数据常用的XML，JSON相比，他更轻更快，因此也更受开发人员的青睐。</p>
+
+<p>目前常见的有2和3两个版本的Protobuf。</p>
+
+<p>相比于v2来说v3主要的改动</p>
+
+<ul>
+<li>在第一行必须写 <code>syntax = “proto3”;</code></li>
+<li>删除了required字段</li>
+<li>删除了optional字段，默认就是optional</li>
+<li>删除了default字段</li>
+<li>删除了扩展特性，新增Any类型来替代</li>
+<li>删除了unknown字段的支持</li>
+<li>新增了JSON Mapping</li>
+<li>新增了Map类型的支持</li>
+<li>修复enum的unknown类型</li>
+<li>repeaetd默认使用packed编码，在 proto2 中，需要明确使用 [packed=true] 来为字段指定比较紧凑的 packed 编码方式。</li>
+<li>增加了新的语言实现</li>
+</ul>
+
+<p>更详细的功能，可以参阅 <a href="https://github.com/protocolbuffers/protobuf/releases?after=v3.2.1">Protobuf Version 3</a></p>
+
+<h3 id="为什么不用xml或者json">为什么不用XML或者JSON</h3>
+
+<ul>
+<li>更简单</li>
+<li>数据描述文件只需原来的1/10至1/3</li>
+<li>解析速度是原来的20倍至100倍</li>
+<li>减少了二义性</li>
+<li>生成了更易使用的数据访问类</li>
+</ul>
+
+<h3 id="举例">举例</h3>
+
+<pre><code class="language-shell">syntax = &quot;proto3&quot;;
+
+service HelloService {
+    rpc Hello (HelloRequest) returns (HelloResponse);
+}
+
+message HelloRequest {
+  string query = 1;
+  int32 page_number = 2;
+  int32 result_per_page = 3;
+}
+
+message HelloResponse {
+    ...
+}
+</code></pre>
+
+<p>1、第一行（非空的非注释行）声明使用 proto3 语法。如果不声明，将默认使用 proto2 语法。同时我建议用 v2 还是 v3，都应当声明其使用的版本</p>
+
+<p>2、定义 HelloService RPC 服务，其包含 RPC 方法 Hello，入参为 HelloRequest 消息，出参为 HelloResponse 消息</p>
+
+<p>3、定义 HelloRequest、HelloResponse 消息，前者定义了三个字段，每一个字段包含三个属性：类型、字段名称、字段编号</p>
+
+<p>4、Protobuf 编译器会根据选择的语言不同，生成相应语言的 Service Interface Code 和 Stubs</p>
+
+<p>最后，这里只是简单的语法介绍，详细的请右拐 <a href="https://developers.google.com/protocol-buffers/docs/proto3">Language Guide (proto3)</a></p>
+
+<h3 id="数据类型">数据类型</h3>
+
+<table>
+<thead>
+<tr>
+<th>.proto Type</th>
+<th>C++ Type</th>
+<th>Java Type</th>
+<th>Golang Type</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>double</td>
+<td>double</td>
+<td>double</td>
+<td>float64</td>
+</tr>
+
+<tr>
+<td>float</td>
+<td>float</td>
+<td>float</td>
+<td>float32</td>
+</tr>
+
+<tr>
+<td>int32</td>
+<td>int32</td>
+<td>int</td>
+<td>int32</td>
+</tr>
+
+<tr>
+<td>int64</td>
+<td>int64</td>
+<td>long</td>
+<td>int64</td>
+</tr>
+
+<tr>
+<td>uint32</td>
+<td>uint32</td>
+<td>int</td>
+<td>uint32</td>
+</tr>
+
+<tr>
+<td>uint64</td>
+<td>uint64</td>
+<td>long</td>
+<td>uint64</td>
+</tr>
+
+<tr>
+<td>sint32</td>
+<td>int32</td>
+<td>int</td>
+<td>int32</td>
+</tr>
+
+<tr>
+<td>sint64</td>
+<td>int64</td>
+<td>long</td>
+<td>int64</td>
+</tr>
+
+<tr>
+<td>fixed32</td>
+<td>uint32</td>
+<td>int</td>
+<td>uint32</td>
+</tr>
+
+<tr>
+<td>fixed64</td>
+<td>uint64</td>
+<td>long</td>
+<td>uint64</td>
+</tr>
+
+<tr>
+<td>sfixed32</td>
+<td>int32</td>
+<td>int</td>
+<td>int32</td>
+</tr>
+
+<tr>
+<td>sfixed64</td>
+<td>int64</td>
+<td>long</td>
+<td>int64</td>
+</tr>
+
+<tr>
+<td>bool</td>
+<td>bool</td>
+<td>boolean</td>
+<td>bool</td>
+</tr>
+
+<tr>
+<td>string</td>
+<td>string</td>
+<td>String</td>
+<td>string</td>
+</tr>
+
+<tr>
+<td>bytes</td>
+<td>string</td>
+<td>ByteString</td>
+<td>[]byte</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="grpc特点">gRPC特点</h2>
+
+<ul>
+<li>HTTP/2</li>
+<li>Protobuf</li>
+<li>客户端、服务端基于同一份IDL</li>
+<li>对移动网络友好</li>
+<li>支持多语言</li>
+</ul>
+
+<h2 id="grpc支持的语言">gRPC支持的语言</h2>
+
+<ul>
+<li>C++</li>
+<li>C#</li>
+<li>Dart</li>
+<li>Go</li>
+<li>Java</li>
+<li>Node.js</li>
+<li>Objective-C</li>
+<li>PHP</li>
+<li>Python</li>
+<li>Ruby</li>
+</ul>
+
+  </article>
+    
+    
+</div>
+
+            <div class="footer">
+                <script src="https://unpkg.com/mermaid@8.4.8/dist/mermaid.min.js?1583990982"></script>
+<script>
+    mermaid.initialize({
+        theme: 'default',  
+        startOnLoad: true
+    });
+    (function() {
+        var codelist = document.querySelectorAll('code.language-mermaid');
+        if (codelist && 'length' in codelist && codelist.length > 0) {
+            for (var i = 0; i < codelist.length; i++) {
+            var div = document.createElement('div');
+            div.className = 'mermaid';
+            div.setAttribute('align', 'center');
+            div.innerHTML = codelist[i].innerHTML.replace(/&amp;/g, '&');
+            codelist[i].replaceWith(div);
+        }
+    }
+    })();
+</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/toml.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/java.min.js"></script>
+
+<script type="text/javascript">
+    hljs.configure({languages: []});
+    hljs.initHighlightingOnLoad();
+</script>
+
+    
+<div id="graphcomment"></div>
+<script type="text/javascript">
+  window.graphcomment_id = 'ray-g-github-io';
+  (function() {
+
+    
+    
+    
+    if (location.hostname === "localhost" ||
+       	location.hostname === "127.0.0.1" ||
+       	location.hostname === "") {
+        return;
+		}
+
+     
+    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+    gc.src = 'https://graphcomment.com/js/integration.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+  })();
+</script>
+
+            </div>
+        </div>
+        
+        
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-121338579-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </body>
+</html>

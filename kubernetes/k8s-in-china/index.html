@@ -10,8 +10,8 @@
     
     <meta name="generator" content="Hugo 0.59.0" />
     
-    <title>Categories &middot; RayG</title>
-    <meta content="Categories - RayG" property="og:title">
+    <title>Setup Kubernetes in China &middot; RayG</title>
+    <meta content="Setup Kubernetes in China - RayG" property="og:title">
     <meta content=" - " property="og:description">
     <!-- CSS -->
     
@@ -34,9 +34,7 @@
     <link rel="shortcut icon" href="/favicon.png">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
-    <!-- RSS -->
-    <link href="https://ray-g.github.io/categories/index.xml" rel="alternate" type="application/rss+xml" title="RayG" />
-    <link href="https://ray-g.github.io/categories/index.xml" rel="feed" type="application/rss+xml" title="RayG" />
+    
 
 	</head>
     <body class="theme-base-0d ">
@@ -119,13 +117,120 @@
 </div>
 
         <div class="content container">
-            <h1 class="title">Categories</h1>
-<ul class="posts">
+            <div class="post">
+  <h1>Setup Kubernetes in China</h1>
+  
+  <div class="col-sm-12 col-md-12">
+    <span class="text-left post-date meta">
+      
+      
+        <i class="fas fa-calendar-alt"></i> Nov 25, 2019
+      
+      
+      
+      
+      <br/>
+      <i class="fas fa-clock"></i> 1 min read
+      </span>
+  </div>
+  
+
+  
+
+
+  <article>
     
-</ul>
+
+<h2 id="setup-minikube">Setup Minikube</h2>
+
+<p><code>minikube start</code> fails on <code>unable to access k8s.gcr.io</code> and etc.</p>
+
+<p>Try using China mirror:</p>
+
+<pre><code class="language-shell">minikube start --registry-mirror=https://registry.docker-cn.com --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers --image-mirror-country='cn'
+</code></pre>
+
+<p>See the help document of <code>minikube</code>:</p>
+
+<pre><code class="language-shell">minimube start --help
+
+# Output:
+# ...
+# --image-mirror-country='': Country code of the image mirror to be used. Leave empty to use the global one. For
+# Chinese mainland users, set it to cn.
+#       --image-repository='': Alternative image repository to pull docker images from. This can be used when you have
+# limited access to gcr.io. Set it to &quot;auto&quot; to let minikube decide one for you. For Chinese mainland users, you may use
+# local gcr.io mirrors such as registry.cn-hangzhou.aliyuncs.com/google_containers
+# --registry-mirror=[]: Registry mirrors to pass to the Docker daemon
+</code></pre>
+
+  </article>
+    
+    
+</div>
 
             <div class="footer">
-                
+                <script src="https://unpkg.com/mermaid@8.4.8/dist/mermaid.min.js?1583990982"></script>
+<script>
+    mermaid.initialize({
+        theme: 'default',  
+        startOnLoad: true
+    });
+    (function() {
+        var codelist = document.querySelectorAll('code.language-mermaid');
+        if (codelist && 'length' in codelist && codelist.length > 0) {
+            for (var i = 0; i < codelist.length; i++) {
+            var div = document.createElement('div');
+            div.className = 'mermaid';
+            div.setAttribute('align', 'center');
+            div.innerHTML = codelist[i].innerHTML.replace(/&amp;/g, '&');
+            codelist[i].replaceWith(div);
+        }
+    }
+    })();
+</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/toml.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/java.min.js"></script>
+
+<script type="text/javascript">
+    hljs.configure({languages: []});
+    hljs.initHighlightingOnLoad();
+</script>
+
+    
+<div id="graphcomment"></div>
+<script type="text/javascript">
+  window.graphcomment_id = 'ray-g-github-io';
+  (function() {
+
+    
+    
+    
+    if (location.hostname === "localhost" ||
+       	location.hostname === "127.0.0.1" ||
+       	location.hostname === "") {
+        return;
+		}
+
+     
+    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+    gc.src = 'https://graphcomment.com/js/integration.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+  })();
+</script>
+
             </div>
         </div>
         

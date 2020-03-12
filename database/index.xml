@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Databases on RayG</title>
+    <link>https://ray-g.github.io/database/</link>
+    <description>Recent content in Databases on RayG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 11 Oct 2017 10:06:15 +0800</lastBuildDate>
+    
+	<atom:link href="https://ray-g.github.io/database/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Database基本知识整理</title>
+      <link>https://ray-g.github.io/database/database_base_knowledge/</link>
+      <pubDate>Wed, 11 Oct 2017 10:06:15 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/database/database_base_knowledge/</guid>
+      <description>事务 Transaction 事务是之满足ACID特性的一组操作，可以Commit提交一个事务，也可以Rollback回滚所提交的事务。 stateDiagram State_1 --&amp;gt; Intermediate_State : insert, update, delete Intermediate_State --&amp;gt; State_2 : commit Intermediate_State</description>
+    </item>
+    
+  </channel>
+</rss>

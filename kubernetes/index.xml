@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kubernetes on RayG</title>
+    <link>https://ray-g.github.io/kubernetes/</link>
+    <description>Recent content in Kubernetes on RayG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 Nov 2019 13:10:55 +0800</lastBuildDate>
+    
+	<atom:link href="https://ray-g.github.io/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setup Kubernetes in China</title>
+      <link>https://ray-g.github.io/kubernetes/k8s-in-china/</link>
+      <pubDate>Mon, 25 Nov 2019 13:10:55 +0800</pubDate>
+      
+      <guid>https://ray-g.github.io/kubernetes/k8s-in-china/</guid>
+      <description>Setup Minikube minikube start fails on unable to access k8s.gcr.io and etc.
+Try using China mirror:
+minikube start --registry-mirror=https://registry.docker-cn.com --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers --image-mirror-country=&#39;cn&#39;  See the help document of minikube:
+minimube start --help # Output: # ... # --image-mirror-country=&#39;&#39;: Country code of the image mirror to be used. Leave empty to use the global one. For # Chinese mainland users, set it to cn. # --image-repository=&#39;&#39;: Alternative image repository to pull docker images from.</description>
+    </item>
+    
+  </channel>
+</rss>
