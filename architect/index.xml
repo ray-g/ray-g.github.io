@@ -20,14 +20,5 @@
       <description>gRPC是什么 gRPC是Google开源的基于Protobuf的RPC框架。使用了高性能的Protobuf和HTTP/2。 官方定义gRPC是</description>
     </item>
     
-    <item>
-      <title>乐观锁</title>
-      <link>https://ray-g.github.io/architect/optimistic_lock/</link>
-      <pubDate>Sun, 13 Aug 2017 14:13:34 +0800</pubDate>
-      
-      <guid>https://ray-g.github.io/architect/optimistic_lock/</guid>
-      <description>现在电商各种流行，各种抢购秒杀等等听起来高大上，背后码农泪千行啊。 说到支付，必然会涉及事务。在上古的单机数据库时代，写一个事务并没有什么特别</description>
-    </item>
-    
   </channel>
 </rss>
